@@ -1,4 +1,5 @@
 const { query } = require('../config/db');
+const { ROLES } = require('../utils/constants');
 
 class RhUser {
   
@@ -75,7 +76,7 @@ class RhUser {
 
   
   static getRolesValides() {
-    return ['admin', 'recruteur'];
+    return ROLES;
   }
 }
 

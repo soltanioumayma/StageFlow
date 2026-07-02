@@ -1,4 +1,5 @@
 const { query } = require('../config/db');
+const { NOTIFICATION_TYPES, NOTIFICATION_STATUSES } = require('../utils/constants');
 
 class Notification {
   
@@ -44,12 +45,12 @@ class Notification {
 
   
   static getTypesValides() {
-    return ['confirmation', 'acceptation', 'refus'];
+    return NOTIFICATION_TYPES;
   }
 
   
   static getStatutsValides() {
-    return ['envoye', 'echec'];
+    return NOTIFICATION_STATUSES;
   }
 }
 

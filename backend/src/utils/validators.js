@@ -1,3 +1,8 @@
+// ============================================================
+// utils/validators.js
+// Fonctions de validation réutilisables
+// ============================================================
+const { NIVEAUX, TYPES_STAGE } = require('./constants');
 
 
 const isValidEmail = (email) => {
@@ -68,13 +73,11 @@ const validateCandidatureData = (data) => {
     errors.push('Lien LinkedIn invalide.');
   }
 
-  const niveauxValides = ['BTS', 'Licence', 'Master', 'Ingenieur', 'Doctorat', 'Autre'];
-  if (data.niveau && !isInList(data.niveau, niveauxValides)) {
+  if (data.niveau && !isInList(data.niveau, NIVEAUX)) {
     errors.push(`Niveau "${data.niveau}" non reconnu.`);
   }
 
-  const typesStageValides = ['PFE', 'Stage_ete', 'Alternance', 'Observation', 'Autre'];
-  if (data.type_stage && !isInList(data.type_stage, typesStageValides)) {
+  if (data.type_stage && !isInList(data.type_stage, TYPES_STAGE)) {
     errors.push(`Type de stage "${data.type_stage}" non reconnu.`);
   }
 

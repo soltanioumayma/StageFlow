@@ -6,11 +6,11 @@ const Document = require('../models/Document.model');
 
 const { generateReference } = require('../services/reference.service');
 const { sendEmail } = require('../services/email.service');
-const cacheService = require('../services/cache.service'); // 🔥 AJOUT
+const cacheService = require('../services/cache.service');
 
 const { successResponse, errorResponse, conflictResponse } =
   require('../utils/responseHandler');
-const { cleanString } = require('../utils/validators');
+const { cleanString, isValidEmail } = require('../utils/validators');
 const logger = require('../utils/logger');
 
 const soumettreCandidature = async (req, res) => {
@@ -28,8 +28,8 @@ const soumettreCandidature = async (req, res) => {
     }
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  // Validation email
+  if (!isValidEmail(email)) {
     return errorResponse(res, 'Email invalide.', 400);
   }
 

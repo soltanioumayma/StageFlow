@@ -6,7 +6,9 @@ const RhNote      = require('../models/RhNote.model');
 const { addToQueue } = require('../services/emailQueue.service');
 const { getCachedStats, setCachedStats, invalidateCache } = require('../services/cache.service');
 const { successResponse, errorResponse, notFoundResponse } = require('../utils/responseHandler');
-const logger = require('../utils/logger'); // ← CORRIGÉ : plus de { logger }
+const { findCandidatureOr404 } = require('../utils/controllerHelpers');
+const { DECISIONS } = require('../utils/constants');
+const logger = require('../utils/logger');
 
 const listerCandidatures = async (req, res) => {
   const { 
@@ -51,12 +53,8 @@ const detailCandidature = async (req, res) => {
   const { id } = req.params;
 
   try {
-
-    const candidature = await Candidature.findById(id);
-
-    if (!candidature) {
-      return notFoundResponse(res, 'Candidature introuvable.');
-    }
+    const candidature = await findCandidatureOr404(id, res);
+    if (!candidature) return;
 
     const candidat = await Candidat.findByCandidatureId(id);
     const formation = await Formation.findByCandidatureId(id);
@@ -99,17 +97,13 @@ const prendreDecision = async (req, res) => {
   const { id }       = req.params;
   const { decision } = req.body;
 
-  if (!['acceptee', 'refusee'].includes(decision)) {
+  if (!DECISIONS.includes(decision)) {
     return errorResponse(res, 'Décision invalide. Valeurs acceptées : "acceptee" ou "refusee".', 400);
   }
 
   try {
-
-    const candidature = await Candidature.findById(id);
-
-    if (!candidature) {
-      return notFoundResponse(res, 'Candidature introuvable.');
-    }
+    const candidature = await findCandidatureOr404(id, res);
+    if (!candidature) return;
 
     const candidat = await Candidat.findByCandidatureId(id);
 
@@ -117,7 +111,7 @@ const prendreDecision = async (req, res) => {
       return notFoundResponse(res, 'Candidat introuvable.');
     }
 
-    if (['acceptee', 'refusee'].includes(candidature.status)) {
+    if (DECISIONS.includes(candidature.status)) {
       return errorResponse(res, `Une décision a déjà été prise pour ce dossier (${candidature.status}).`, 400);
     }
 
@@ -171,10 +165,8 @@ const addNote = async (req, res) => {
   }
 
   try {
-    const candidature = await Candidature.findById(id);
-    if (!candidature) {
-      return notFoundResponse(res, 'Candidature introuvable.');
-    }
+    const candidature = await findCandidatureOr404(id, res);
+    if (!candidature) return;
 
     const newNote = await RhNote.create({
       candidature_id: id,
@@ -194,10 +186,8 @@ const getNotes = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const candidature = await Candidature.findById(id);
-    if (!candidature) {
-      return notFoundResponse(res, 'Candidature introuvable.');
-    }
+    const candidature = await findCandidatureOr404(id, res);
+    if (!candidature) return;
 
     const notes = await RhNote.findByCandidatureId(id);
     return successResponse(res, { notes });

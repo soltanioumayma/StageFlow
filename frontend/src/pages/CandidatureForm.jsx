@@ -8,6 +8,7 @@ import FileUpload from '../components/FileUpload';
 import Card from '../components/Card';
 import PhoneInput from '../components/PhoneInput';
 import { candidatureService } from '../services/candidatureService';
+import { NIVEAUX_OPTIONS, TYPES_STAGE_OPTIONS } from '../utils/constants';
 
 const CandidatureForm = () => {
   const navigate = useNavigate();
@@ -30,23 +31,6 @@ const CandidatureForm = () => {
     rgpd_accepted: false,
     cv: null,
   });
-
-  const niveaux = [
-    { value: 'BTS', label: 'BTS' },
-    { value: 'Licence', label: 'Licence' },
-    { value: 'Master', label: 'Master' },
-    { value: 'Ingenieur', label: 'Ingénieur' },
-    { value: 'Doctorat', label: 'Doctorat' },
-    { value: 'Autre', label: 'Autre' },
-  ];
-
-  const typesStage = [
-    { value: 'PFE', label: 'PFE' },
-    { value: 'Stage_ete', label: 'Stage d\'été' },
-    { value: 'Alternance', label: 'Alternance' },
-    { value: 'Observation', label: 'Stage d\'observation' },
-    { value: 'Autre', label: 'Autre' },
-  ];
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -294,7 +278,7 @@ if (formData.lien_linkedin.trim()) {
               name="niveau"
               value={formData.niveau}
               onChange={handleChange}
-              options={niveaux}
+              options={NIVEAUX_OPTIONS}
               required
             />
             <Select
@@ -302,7 +286,7 @@ if (formData.lien_linkedin.trim()) {
               name="type_stage"
               value={formData.type_stage}
               onChange={handleChange}
-              options={typesStage}
+              options={TYPES_STAGE_OPTIONS}
               required
             />
             <Input

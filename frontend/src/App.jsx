@@ -1,6 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Welcome from './pages/Welcome'
 import CandidatureForm from './pages/CandidatureForm'
 import SuiviCandidature from './pages/SuiviCandidature'

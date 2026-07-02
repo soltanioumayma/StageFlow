@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import Card from '../components/Card';
 import { candidatureService } from '../services/candidatureService';
+import { formatDateMedium } from '../utils/dateHelpers';
 
 const SuiviCandidature = () => {
   const navigate = useNavigate();
@@ -40,11 +41,6 @@ const SuiviCandidature = () => {
       default:
         return 'bg-gray-300';
     }
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
   return (
@@ -118,7 +114,7 @@ const SuiviCandidature = () => {
                     <p className="font-medium text-gray-900">{step.nom}</p>
                     {step.statut === 'completee' && index === 0 && (
                       <p className="text-sm text-gray-500">
-                        {formatDate(result.dossier.submitted_at)}
+                        {formatDateMedium(result.dossier.submitted_at)}
                       </p>
                     )}
                     <p className="text-sm text-gray-600 capitalize">

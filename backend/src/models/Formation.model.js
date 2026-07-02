@@ -1,4 +1,5 @@
 const { query } = require('../config/db');
+const { NIVEAUX, TYPES_STAGE } = require('../utils/constants');
 
 class Formation {
   
@@ -70,12 +71,12 @@ class Formation {
 
   
   static getNiveauxValides() {
-    return ['BTS', 'Licence', 'Master', 'Ingenieur', 'Doctorat', 'Autre'];
+    return NIVEAUX;
   }
 
   
   static getTypesStageValides() {
-    return ['PFE', 'Stage_ete', 'Alternance', 'Observation', 'Autre'];
+    return TYPES_STAGE;
   }
 }
 

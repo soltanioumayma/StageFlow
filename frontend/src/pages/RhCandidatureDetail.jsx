@@ -5,6 +5,8 @@ import Card from '../components/Card';
 import { hrService } from '../services/hrService';
 import { authService } from '../services/authService';
 import { useToast } from '../components/Toast';
+import { getStatusColor } from '../utils/statusHelpers';
+import { formatDateShort, formatDateTime } from '../utils/dateHelpers';
 
 const RhCandidatureDetail = () => {
   const navigate = useNavigate();
@@ -134,19 +136,6 @@ const RhCandidatureDetail = () => {
     setEditNoteText('');
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'en_attente':
-        return 'bg-blue-100 text-blue-800';
-      case 'acceptee':
-        return 'bg-green-100 text-green-800';
-      case 'refusee':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden">
@@ -232,7 +221,7 @@ const RhCandidatureDetail = () => {
               </div>
               <div className="flex justify-between items-center py-3">
                 <span className="text-gray-600 font-medium">Soumis le</span>
-                <span className="font-semibold text-gray-900">{new Date(dossier.submitted_at).toLocaleDateString('fr-FR')}</span>
+                <span className="font-semibold text-gray-900">{formatDateShort(dossier.submitted_at)}</span>
               </div>
             </div>
           </div>
@@ -340,7 +329,7 @@ const RhCandidatureDetail = () => {
               </span>
             </div>
             <p className="text-sm text-gray-600 mb-6">
-              Soumis le {new Date(dossier.submitted_at).toLocaleDateString('fr-FR')}
+              Soumis le {formatDateShort(dossier.submitted_at)}
             </p>
             
             {!['acceptee', 'refusee'].includes(dossier.status) && (
@@ -472,13 +461,7 @@ const RhCandidatureDetail = () => {
                                 {note.prenom} {note.nom}
                               </p>
                               <p className="text-xs text-gray-500">
-                                {new Date(note.created_at).toLocaleDateString('fr-FR', {
-                                  day: '2-digit',
-                                  month: '2-digit',
-                                  year: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })}
+                                {formatDateTime(note.created_at)}
                               </p>
                             </div>
                           </div>
@@ -506,13 +489,7 @@ const RhCandidatureDetail = () => {
                         <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{note.note}</p>
                         {note.updated_at !== note.created_at && (
                           <p className="text-xs text-gray-400 mt-3">
-                            Modifié le {new Date(note.updated_at).toLocaleDateString('fr-FR', {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
+                            Modifié le {formatDateTime(note.updated_at)}
                           </p>
                         )}
                       </div>

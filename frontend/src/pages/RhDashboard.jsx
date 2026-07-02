@@ -5,6 +5,10 @@ import { SkeletonCard, SkeletonStats, SkeletonInput } from '../components/Skelet
 import { useToast } from '../components/Toast';
 import { hrService } from '../services/hrService';
 import { authService } from '../services/authService';
+import { getStatusColor } from '../utils/statusHelpers';
+import { formatDateShort } from '../utils/dateHelpers';
+import { exportToCSV } from '../utils/csvExport';
+import { NIVEAUX_OPTIONS, TYPES_STAGE_OPTIONS } from '../utils/constants';
 
 const POLLING_INTERVAL = 15000;
 
@@ -31,6 +35,9 @@ const RhDashboard = () => {
       navigate('/rh/login');
       return;
     }
+  }, [navigate]);
+
+  useEffect(() => {
     loadData();
   }, [filter, search, typeStageFilter, niveauFilter, dateFrom, dateTo, currentPage]);
 
@@ -109,30 +116,18 @@ const RhDashboard = () => {
 
   const handleExportCSV = () => {
     const headers = ['Référence', 'Nom', 'Prénom', 'Email', 'Téléphone', 'Statut', 'Type de stage', 'Niveau', 'Date de soumission'];
-    const csvContent = [
-      headers.join(','),
-      ...candidatures.map(c => [
-        c.reference,
-        c.nom,
-        c.prenom,
-        c.email,
-        c.telephone || '',
-        c.status,
-        c.type_stage,
-        c.niveau,
-        new Date(c.submitted_at).toLocaleDateString('fr-FR')
-      ].join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `candidatures_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const rows = candidatures.map(c => [
+      c.reference,
+      c.nom,
+      c.prenom,
+      c.email,
+      c.telephone || '',
+      c.status,
+      c.type_stage,
+      c.niveau,
+      formatDateShort(c.submitted_at),
+    ]);
+    exportToCSV(headers, rows, `candidatures_${new Date().toISOString().split('T')[0]}`);
   };
 
   const resetFilters = () => {
@@ -143,19 +138,6 @@ const RhDashboard = () => {
     setDateFrom('');
     setDateTo('');
     setCurrentPage(1);
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'en_attente':
-        return 'bg-blue-100 text-blue-800';
-      case 'acceptee':
-        return 'bg-green-100 text-green-800';
-      case 'refusee':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
   };
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -315,11 +297,9 @@ const RhDashboard = () => {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
               >
                 <option value="">Tous les types</option>
-                <option value="PFE">PFE</option>
-                <option value="Stage_ete">Stage d'été</option>
-                <option value="Alternance">Alternance</option>
-                <option value="Observation">Observation</option>
-                <option value="Autre">Autre</option>
+                {TYPES_STAGE_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
               </select>
             </div>
 
@@ -331,12 +311,9 @@ const RhDashboard = () => {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
               >
                 <option value="">Tous les niveaux</option>
-                <option value="BTS">BTS</option>
-                <option value="Licence">Licence</option>
-                <option value="Master">Master</option>
-                <option value="Ingenieur">Ingénieur</option>
-                <option value="Doctorat">Doctorat</option>
-                <option value="Autre">Autre</option>
+                {NIVEAUX_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -422,7 +399,7 @@ const RhDashboard = () => {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            {new Date(c.submitted_at).toLocaleDateString('fr-FR')}
+                            {formatDateShort(c.submitted_at)}
                           </span>
                           <span className="flex items-center gap-1">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
