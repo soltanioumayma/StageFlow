@@ -1,7 +1,3 @@
-// ============================================================
-// utils/logger.js
-// Logger simple pour le suivi des erreurs et informations
-// ============================================================
 
 const LOG_LEVELS = {
   ERROR: 'ERROR',
@@ -61,3 +57,6 @@ module.exports = {
   debug,
   LOG_LEVELS,
 };
+
+
+

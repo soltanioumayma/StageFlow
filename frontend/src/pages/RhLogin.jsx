@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import logo from '../assets/LOGO-RIF.png';
 import { authService } from '../services/authService';
 
 const RhLogin = () => {
@@ -31,15 +32,23 @@ const RhLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+      <div className="w-full max-w-md relative z-10">
         <div className="bg-white rounded-2xl border-2 border-blue-200 shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
+            <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+  <img
+    src={logo}
+    alt="Groupe RIF"
+    className="w-full h-full object-contain rounded-full shadow-md"
+  />
+</div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Espace RH</h1>
             <p className="text-gray-600">Groupe RIF</p>
           </div>
@@ -62,7 +71,6 @@ const RhLogin = () => {
             />
           </div>
 
-          {/* Mot de passe avec bouton afficher/masquer */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="password">
               Mot de passe
@@ -87,13 +95,11 @@ const RhLogin = () => {
                 aria-pressed={showPassword}
               >
                 {showPassword ? (
-                  // Icône "œil barré" (masquer)
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
                   </svg>
                 ) : (
-                  // Icône "œil" (afficher)
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -113,9 +119,9 @@ const RhLogin = () => {
               {error}
             </div>
           )}
-          <Button 
-            type="submit" 
-            disabled={loading} 
+          <Button
+            type="submit"
+            disabled={loading}
             className="w-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {loading ? (

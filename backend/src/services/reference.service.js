@@ -1,7 +1,3 @@
-// =========================================================================
-// services/reference.service.js
-// Génère des références uniques : RIF-2026-0042
-// =========================================================================
 const Candidature = require('../models/Candidature.model');
 
 /**
@@ -29,3 +25,6 @@ const generateReference = async () => {
 };
 
 module.exports = { generateReference };
+
+
+

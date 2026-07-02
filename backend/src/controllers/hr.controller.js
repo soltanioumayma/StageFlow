@@ -1,7 +1,3 @@
-// ============================================================
-// controllers/hr.controller.js
-// Actions de l'espace recruteur (toutes protégées par JWT)
-// ============================================================
 const Candidature = require('../models/Candidature.model');
 const Candidat    = require('../models/Candidat.model');
 const Formation   = require('../models/Formation.model');
@@ -12,21 +8,6 @@ const { getCachedStats, setCachedStats, invalidateCache } = require('../services
 const { successResponse, errorResponse, notFoundResponse } = require('../utils/responseHandler');
 const logger = require('../utils/logger'); // ← CORRIGÉ : plus de { logger }
 
-// ────────────────────────────────────────────────────────────
-// GET /api/hr/candidatures
-// Liste toutes les candidatures avec filtres et recherche
-// Query params : 
-//   - status: en_attente | acceptee | refusee
-//   - search: recherche sur nom, email, référence
-//   - type_stage: PFE | Stage_ete | Alternance | Observation | Autre
-//   - niveau: BTS | Licence | Master | Ingenieur | Doctorat | Autre
-//   - date_from: date de début (YYYY-MM-DD)
-//   - date_to: date de fin (YYYY-MM-DD)
-//   - page: numéro de page (défaut 1)
-//   - limit: nombre par page (défaut 20)
-//   - sort: submitted_at | nom | email (défaut submitted_at)
-//   - order: ASC | DESC (défaut DESC)
-// ────────────────────────────────────────────────────────────
 const listerCandidatures = async (req, res) => {
   const { 
     status, 
@@ -66,10 +47,6 @@ const listerCandidatures = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// GET /api/hr/candidatures/:id
-// Détail complet d'un dossier (Screen 11)
-// ────────────────────────────────────────────────────────────
 const detailCandidature = async (req, res) => {
   const { id } = req.params;
 
@@ -118,11 +95,6 @@ const detailCandidature = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// PATCH /api/hr/candidatures/:id/decision
-// Valider ou refuser un dossier (boutons Screen 11)
-// Body : { decision: 'acceptee' | 'refusee' }
-// ────────────────────────────────────────────────────────────
 const prendreDecision = async (req, res) => {
   const { id }       = req.params;
   const { decision } = req.body;
@@ -173,10 +145,6 @@ const prendreDecision = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// GET /api/hr/stats
-// Statistiques rapides pour le dashboard (avec cache)
-// ────────────────────────────────────────────────────────────
 const getStats = async (req, res) => {
   try {
     // Essayer de récupérer du cache
@@ -200,11 +168,6 @@ const getStats = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// POST /api/hr/candidatures/:id/notes
-// Ajouter une note à une candidature
-// Body : { note: string }
-// ────────────────────────────────────────────────────────────
 const addNote = async (req, res) => {
   const { id } = req.params;
   const { note } = req.body;
@@ -234,10 +197,6 @@ const addNote = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// GET /api/hr/candidatures/:id/notes
-// Récupérer toutes les notes d'une candidature
-// ────────────────────────────────────────────────────────────
 const getNotes = async (req, res) => {
   const { id } = req.params;
 
@@ -255,11 +214,6 @@ const getNotes = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// PUT /api/hr/notes/:id
-// Mettre à jour une note
-// Body : { note: string }
-// ────────────────────────────────────────────────────────────
 const updateNote = async (req, res) => {
   const { id } = req.params;
   const { note } = req.body;
@@ -289,10 +243,6 @@ const updateNote = async (req, res) => {
   }
 };
 
-// ────────────────────────────────────────────────────────────
-// DELETE /api/hr/notes/:id
-// Supprimer une note
-// ────────────────────────────────────────────────────────────
 const deleteNote = async (req, res) => {
   const { id } = req.params;
   const rh_user_id = req.user.id;
@@ -327,3 +277,5 @@ module.exports = {
   updateNote,
   deleteNote
 };
+
+

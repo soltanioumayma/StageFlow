@@ -23,73 +23,87 @@ const Welcome = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Status Bar - Only on mobile */}
-      <div className="h-[47px] bg-white px-6 flex items-center justify-between md:hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col relative overflow-hidden">
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+
+      <div className="h-[47px] bg-white/90 backdrop-blur-md px-6 flex items-center justify-between md:hidden z-10 border-b border-slate-100">
         <span className="text-slate-900 text-sm font-semibold">9:41</span>
         <span className="text-slate-900 text-xs">●●● ▮</span>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 px-6 py-8 overflow-auto">
-        {/* Container for desktop */}
+      <div className="flex-1 px-6 py-8 overflow-auto relative z-10">
         <div className="max-w-md mx-auto">
-          {/* Banner */}
-          <div className="w-full h-[160px] rounded-2xl shadow-sm border border-slate-200 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center mb-8 md:mb-12 overflow-hidden">
-            <div className="text-center">
-              <h2 className="text-4xl font-normal text-blue-700" style={{ fontFamily: 'K2D, sans-serif' }}>
+
+          <div className="w-full bg-white/95 backdrop-blur-md rounded-3xl border-2 border-blue-500 shadow-xl shadow-blue-100/50 px-8 py-5 flex items-center justify-center gap-4 mb-10">
+            <div className="w-14 h-14 flex-shrink-0">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="grad" x1="20%" y1="20%" x2="80%" y2="80%">
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="50%" stopColor="#F97316" />
+                    <stop offset="100%" stopColor="#8B5CF6" />
+                  </linearGradient>
+                </defs>
+                <path d="M40 60 L100 20 L160 60 L160 140 L100 180 L40 140 Z" fill="url(#grad)" />
+                <path d="M70 90 L100 70 L130 90 L130 120 L100 140 L70 120 Z" fill="white" fillOpacity="0.9" />
+              </svg>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-semibold text-slate-900 tracking-tight" style={{ fontFamily: 'K2D, sans-serif' }}>
                 Groupe RIF
               </h2>
+              <p className="text-xs text-slate-500 -mt-1">Entreprise Internationale</p>
             </div>
           </div>
 
-        {/* Title */}
-        <h1 className="text-[34px] font-bold text-slate-900 leading-[40px] mb-4">
-          Votre stage,<br />simplifié.
-        </h1>
+          <h1 className="text-[34px] font-bold text-slate-900 leading-[38px] mb-4 text-center">
+            Votre stage,<br />simplifié.
+          </h1>
 
-        {/* Description */}
-        <p className="text-base text-slate-500 leading-6 mb-8">
-          Postulez en quelques minutes. Suivez votre dossier en temps réel.
-        </p>
+          <p className="text-base text-slate-600 leading-6 mb-10 text-center">
+            Postulez en quelques minutes. Suivez<br />votre dossier en temps réel.
+          </p>
 
-        {/* Features List */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
-          {features.map((feature, index) => (
-            <div key={index}>
-              <div className="flex items-center gap-4 p-4">
-                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-                  <span className="text-blue-600 text-base font-semibold">{feature.number}</span>
+          <div className="bg-white/95 backdrop-blur-md rounded-3xl border-2 border-blue-500 shadow-xl shadow-blue-100/50 overflow-hidden mb-10">
+            {features.map((feature, index) => (
+              <div key={index}>
+                <div className="flex items-center gap-4 p-6">
+                  <div className="w-9 h-9 bg-blue-50 rounded-2xl flex-shrink-0 flex items-center justify-center">
+                    <span className="text-blue-600 text-lg font-semibold">{feature.number}</span>
+                  </div>
+                  <div>
+                    <p className="text-[17px] font-semibold text-slate-900">{feature.title}</p>
+                    <p className="text-sm text-slate-500 mt-0.5">{feature.description}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-slate-900">{feature.title}</p>
-                  <p className="text-xs text-slate-500">{feature.description}</p>
-                </div>
+                {index < features.length - 1 && (
+                  <div className="h-px bg-slate-100 mx-6" />
+                )}
               </div>
-              {index < features.length - 1 && <div className="h-px bg-slate-200 mx-4" />}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* CTA Button */}
-        <Button
-          onClick={() => navigate('/candidature')}
-          className="w-full shadow-sm"
-        >
-          Commencer ma candidature
-        </Button>
+          <Button
+            onClick={() => navigate('/candidature')}
+            className="w-full py-3.5 text-base font-semibold shadow-sm"
+          >
+            Commencer ma candidature
+          </Button>
 
-        {/* Already Applied Link */}
-        <button
-          onClick={() => navigate('/suivi')}
-          className="w-full text-center text-blue-600 text-sm font-medium mt-4 mb-8"
-        >
-          J'ai déjà postulé
-        </button>
+          <button
+            onClick={() => navigate('/suivi')}
+            className="w-full text-center text-blue-600 text-[15px] font-medium mt-5 mb-8"
+          >
+            J'ai déjà postulé
+          </button>
         </div>
       </div>
 
-      {/* Home Indicator - Only on mobile */}
       <div className="h-[34px] flex items-center justify-center md:hidden">
         <div className="w-[134px] h-1 bg-slate-900/20 rounded-full" />
       </div>

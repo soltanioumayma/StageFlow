@@ -21,3 +21,4 @@ const Button = ({ children, variant = 'primary', type = 'button', disabled, onCl
 };
 
 export default Button;
+

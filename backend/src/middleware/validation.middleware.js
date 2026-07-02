@@ -1,7 +1,3 @@
-// ============================================================
-// middleware/validation.middleware.js
-// Middleware de validation avec express-validator
-// ============================================================
 const { body, param, query, validationResult } = require('express-validator');
 const { validationResponse } = require('../utils/responseHandler');
 
@@ -165,3 +161,5 @@ module.exports = {
   validateCandidatureId,
   validateDecision,
 };
+
+

@@ -1,7 +1,3 @@
-// ============================================================
-// utils/index.js
-// Centralise tous les utilitaires pour faciliter les imports
-// ============================================================
 
 const validators      = require('./validators');
 const responseHandler = require('./responseHandler');
@@ -14,3 +10,6 @@ module.exports = {
   asyncHandler,
   logger,
 };
+
+
+

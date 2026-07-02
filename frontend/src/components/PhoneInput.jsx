@@ -35,12 +35,9 @@ const countries = [
 ];
 
 const PhoneInput = ({ label, name = 'telephone', value, onChange, required, error, className = '' }) => {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]); // Tunisie par défaut
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  // Synchronise l'état interne avec la prop `value` venant du parent.
-  // Nécessaire car le composant est démonté/remonté quand on change d'étape
-  // (retour à l'étape 1) : sans ça, phoneNumber repart à '' à chaque remount.
   useEffect(() => {
     if (!value) {
       setPhoneNumber('');
@@ -52,9 +49,8 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
       setPhoneNumber(value.slice(country.dialCode.length));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // uniquement au montage : on ne veut pas écraser la saisie en cours
+  }, []);
 
-  // Émet un événement compatible avec handleChange(e) du parent : { target: { name, value } }
   const emitChange = (dialCode, number) => {
     onChange({
       target: {
@@ -72,7 +68,7 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
   };
 
   const handlePhoneChange = (e) => {
-    const digitsOnly = e.target.value.replace(/\D/g, ''); // Only digits
+    const digitsOnly = e.target.value.replace(/\D/g, '');
     setPhoneNumber(digitsOnly);
     emitChange(selectedCountry.dialCode, digitsOnly);
   };
@@ -95,7 +91,6 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
         </label>
       )}
       <div className="flex gap-2">
-        {/* Country Selector */}
         <select
           value={selectedCountry.code}
           onChange={handleCountryChange}
@@ -116,7 +111,6 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
           ))}
         </select>
 
-        {/* Phone Input */}
         <input
           type="tel"
           name={name}

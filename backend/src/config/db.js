@@ -1,7 +1,3 @@
-// ============================================================
-// config/db.js – Connexion à PostgreSQL
-// Utilise un "pool" de connexions pour la performance
-// ============================================================
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -12,7 +8,6 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || 'postgres',
 });
 
-// Test de connexion au démarrage
 pool.connect((err, client, release) => {
   if (err) {
     console.error(' Impossible de se connecter à PostgreSQL :', err.message);
@@ -22,8 +17,9 @@ pool.connect((err, client, release) => {
   }
 });
 
-// Fonction utilitaire : exécuter une requête SQL
-// Usage : const result = await query('SELECT * FROM candidatures WHERE id = $1', [id]);
 const query = (text, params) => pool.query(text, params);
 
 module.exports = { query, pool };
+
+
+

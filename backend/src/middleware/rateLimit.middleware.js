@@ -1,7 +1,3 @@
-// ============================================================
-// middleware/rateLimit.middleware.js
-// Protection contre les attaques brute force
-// ============================================================
 
 const rateLimitMap = new Map();
 
@@ -56,3 +52,6 @@ const loginRateLimit = rateLimit({
 });
 
 module.exports = { rateLimit, loginRateLimit };
+
+
+

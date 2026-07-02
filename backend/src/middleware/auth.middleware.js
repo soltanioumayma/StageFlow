@@ -1,7 +1,3 @@
-// ============================================================
-// middleware/auth.middleware.js
-// Vérifie le token JWT pour protéger les routes RH
-// ============================================================
 const jwt = require('jsonwebtoken');
 
 /**
@@ -40,3 +36,6 @@ const protect = (req, res, next) => {
 };
 
 module.exports = { protect };
+
+
+

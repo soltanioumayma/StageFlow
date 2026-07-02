@@ -1,7 +1,3 @@
-// ============================================================
-// controllers/auth.controller.js
-// Gère la connexion des utilisateurs RH
-// ============================================================
 const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
 const RhUser = require('../models/RhUser.model');
@@ -130,3 +126,5 @@ const refreshToken = async (req, res) => {
 };
 
 module.exports = { login, getMe, refreshToken };
+
+

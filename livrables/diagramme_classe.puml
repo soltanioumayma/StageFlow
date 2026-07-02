@@ -1,0 +1,103 @@
+@startuml StageFlow - Diagramme de Classe
+!theme plain
+skinparam classAttributeIconSize 0
+
+' ============================================================
+' TABLE CENTRALE : candidatures
+' ============================================================
+class candidatures {
+    + id : SERIAL <<PK>>
+    + reference : VARCHAR(20) <<UNIQUE>>
+    + status : VARCHAR(20)
+    + rgpd_accepted : BOOLEAN
+    + submitted_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+' ============================================================
+' TABLE 1 : rh_users
+' ============================================================
+class rh_users {
+    + id : SERIAL <<PK>>
+    + email : VARCHAR(255) <<UNIQUE>>
+    + password_hash : VARCHAR(255)
+    + nom : VARCHAR(100)
+    + prenom : VARCHAR(100)
+    + role : VARCHAR(20)
+    + created_at : TIMESTAMP
+}
+
+' ============================================================
+' TABLE 2 : candidats
+' ============================================================
+class candidats {
+    + id : SERIAL <<PK>>
+    + candidature_id : INT <<FK>>
+    + prenom : VARCHAR(100)
+    + nom : VARCHAR(100)
+    + email : VARCHAR(255)
+    + telephone : VARCHAR(20)
+}
+
+' ============================================================
+' TABLE 3 : formations
+' ============================================================
+class formations {
+    + id : SERIAL <<PK>>
+    + candidature_id : INT <<FK>>
+    + etablissement : VARCHAR(200)
+    + specialite : VARCHAR(200)
+    + niveau : VARCHAR(50)
+    + type_stage : VARCHAR(50)
+    + lien_github : VARCHAR(500)
+    + lien_linkedin : VARCHAR(500)
+}
+
+' ============================================================
+' TABLE 4 : documents
+' ============================================================
+class documents {
+    + id : SERIAL <<PK>>
+    + candidature_id : INT <<FK>>
+    + cv_nom_original : VARCHAR(255)
+    + cv_chemin : VARCHAR(500)
+    + cv_taille_octets : INT
+    + lettre_motivation : TEXT
+}
+
+' ============================================================
+' TABLE 5 : notifications
+' ============================================================
+class notifications {
+    + id : SERIAL <<PK>>
+    + candidature_id : INT <<FK>>
+    + type_notif : VARCHAR(30)
+    + email_dest : VARCHAR(255)
+    + sujet : VARCHAR(255)
+    + statut : VARCHAR(20)
+    + envoye_le : TIMESTAMP
+}
+
+' ============================================================
+' TABLE 6 : rh_notes
+' ============================================================
+class rh_notes {
+    + id : SERIAL <<PK>>
+    + candidature_id : INT <<FK>>
+    + rh_user_id : INT <<FK>>
+    + note : TEXT
+    + created_at : TIMESTAMP
+    + updated_at : TIMESTAMP
+}
+
+' ============================================================
+' RELATIONS
+' ============================================================
+candidats "1" -- "1" candidatures : >
+formations "1" -- "1" candidatures : >
+documents "1" -- "1" candidatures : >
+notifications "0..*" -- "1" candidatures : >
+rh_notes "0..*" -- "1" candidatures : >
+rh_notes "0..*" -- "1" rh_users : >
+
+@enduml

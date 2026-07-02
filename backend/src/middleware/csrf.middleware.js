@@ -1,7 +1,3 @@
-// ============================================================
-// middleware/csrf.middleware.js
-// Protection CSRF pour les routes sensibles
-// ============================================================
 const crypto = require('crypto');
 
 const csrfTokens = new Map();
@@ -62,3 +58,6 @@ const csrfProtection = (req, res, next) => {
 };
 
 module.exports = { csrfProtection, generateCsrfToken };
+
+
+

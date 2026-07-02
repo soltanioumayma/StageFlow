@@ -1,7 +1,3 @@
-// ============================================================
-// utils/validators.js
-// Fonctions de validation réutilisables
-// ============================================================
 
 /**
  * Valide un email
@@ -136,3 +132,6 @@ module.exports = {
   validateCandidatureData,
   validateDecisionData,
 };
+
+
+

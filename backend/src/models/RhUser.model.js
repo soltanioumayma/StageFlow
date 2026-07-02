@@ -1,7 +1,3 @@
-// ============================================================
-// models/RhUser.model.js
-// Modèle pour la table rh_users
-// ============================================================
 const { query } = require('../config/db');
 
 class RhUser {
@@ -100,3 +96,6 @@ class RhUser {
 }
 
 module.exports = RhUser;
+
+
+

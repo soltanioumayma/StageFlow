@@ -1,7 +1,3 @@
-// ============================================================
-// models/Formation.model.js
-// Modèle pour la table formations
-// ============================================================
 const { query } = require('../config/db');
 
 class Formation {
@@ -99,3 +95,5 @@ class Formation {
 }
 
 module.exports = Formation;
+
+

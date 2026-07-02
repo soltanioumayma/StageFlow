@@ -48,14 +48,20 @@ const SuiviCandidature = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
+      <div className="bg-white/90 backdrop-blur-sm border-b border-gray-200 px-4 py-4 relative z-10">
         <h1 className="text-lg font-bold text-gray-900">Mon dossier</h1>
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 relative z-10">
         {!result ? (
           <Card className="w-full max-w-md mx-auto shadow-none border-0 p-0">
             <form onSubmit={handleSubmit} className="space-y-4">

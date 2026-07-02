@@ -1,7 +1,3 @@
-// ============================================================
-// models/Document.model.js
-// Modèle pour la table documents
-// ============================================================
 const { query } = require('../config/db');
 
 class Document {
@@ -73,3 +69,6 @@ class Document {
 }
 
 module.exports = Document;
+
+
+

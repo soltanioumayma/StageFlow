@@ -8,8 +8,14 @@ const Confirmation = () => {
   const { reference, candidatureId } = location.state || {};
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-      <div className="max-w-md mx-auto text-center w-full">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+      <div className="max-w-md mx-auto text-center w-full relative z-10">
         {/* Green Circle with OK */}
         <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-green-500 mb-6">
           <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

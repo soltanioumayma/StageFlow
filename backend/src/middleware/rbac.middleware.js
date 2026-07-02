@@ -1,7 +1,3 @@
-// ============================================================
-// middleware/rbac.middleware.js
-// Contrôle d'accès basé sur les rôles (RBAC)
-// ============================================================
 
 /**
  * Définition des rôles et permissions
@@ -114,3 +110,6 @@ module.exports = {
   canDecide,
   canExport,
 };
+
+
+

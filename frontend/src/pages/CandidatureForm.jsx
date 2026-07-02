@@ -15,7 +15,6 @@ const CandidatureForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Étape 1: Infos personnelles
   const [formData, setFormData] = useState({
     prenom: '',
     nom: '',
@@ -77,8 +76,6 @@ const CandidatureForm = () => {
     return false;
   }
 
-  // Liste des indicatifs (mêmes valeurs que dans PhoneInput.jsx),
-  // triés du plus long au plus court pour éviter les ambiguïtés (+20 vs +212 par ex.)
   const DIAL_CODES = [
     '+216', '+212', '+213', '+966', '+971', '+974', '+965', '+973',
     '+968', '+961', '+962', '+964', '+963', '+967', '+218', '+249',
@@ -113,7 +110,6 @@ if (formData.lien_github.trim()) {
   }
 }
 
-// LinkedIn (optionnel) : si rempli, doit être un lien linkedin.com/in/... valide
 if (formData.lien_linkedin.trim()) {
   const linkedinRegex = /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-]+\/?$/;
   if (!linkedinRegex.test(formData.lien_linkedin.trim())) {
@@ -125,8 +121,16 @@ if (formData.lien_linkedin.trim()) {
   break;
 }
       case 3:
+        if (!formData.cv && !formData.lettre_motivation.trim()) {
+          setError('CV et lettre de motivation sont obligatoires pour poursuivre la candidature.');
+          return false;
+        }
         if (!formData.cv) {
-          setError('Veuillez déposer votre CV');
+          setError('Veuillez ajouter votre CV avant de continuer.');
+          return false;
+        }
+        if (!formData.lettre_motivation.trim()) {
+          setError('Veuillez ajouter votre lettre de motivation avant de continuer.');
           return false;
         }
         break;
@@ -184,9 +188,13 @@ if (formData.lien_linkedin.trim()) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
-      {/* Header */}
-      <div className="bg-white px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col relative overflow-hidden">
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+      <div className="bg-white/90 backdrop-blur-sm px-4 py-4 relative z-10">
         <div className="max-w-md mx-auto flex items-center justify-between mb-4">
           <button
             onClick={handleBack}
@@ -196,8 +204,6 @@ if (formData.lien_linkedin.trim()) {
           </button>
           <span className="text-sm text-gray-500">Étape {step}/4</span>
         </div>
-        
-        {/* Progress Bar - 4 Pills */}
         <div className="max-w-md mx-auto flex gap-2">
           {[1, 2, 3, 4].map((s) => (
             <div
@@ -210,10 +216,8 @@ if (formData.lien_linkedin.trim()) {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-4 overflow-auto">
+      <div className="flex-1 p-4 overflow-auto relative z-10">
         <div className="max-w-md mx-auto">
-          {/* Title outside card */}
           <h1 className="text-2xl font-bold text-gray-900 mb-6">
             {step === 1 && 'Informations'}
             {step === 2 && 'Formation'}
@@ -221,7 +225,6 @@ if (formData.lien_linkedin.trim()) {
             {step === 4 && 'Récapitulatif'}
           </h1>
 
-          {/* Card */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-4">
 
         {error && (
@@ -323,38 +326,84 @@ if (formData.lien_linkedin.trim()) {
         {step === 3 && (
           <div className="space-y-6">
             <p className="text-base text-gray-600 font-normal">Ajoutez vos documents</p>
-            
-            <div className="space-y-4">
+
+            <div className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-800 mb-2">
-                  CV et lettre de motivation
+                  CV <span className="text-red-500 ml-0.5">*</span>
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center hover:border-blue-500 transition-colors bg-gray-50">
-                  <input
-                    type="file"
-                    name="cv"
-                    accept=".pdf"
-                    onChange={handleChange}
-                    className="hidden"
-                    id="cv-upload"
-                  />
+
+                <input
+                  type="file"
+                  name="cv"
+                  accept=".pdf"
+                  onChange={handleChange}
+                  className="hidden"
+                  id="cv-upload"
+                />
+
+                {formData.cv ? (
+                  <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-2xl px-4 py-3">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <polyline points="9 15 12 18 15 15"/>
+                        <line x1="12" y1="18" x2="12" y2="11"/>
+                      </svg>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-800 truncate">{formData.cv.name}</p>
+                      <p className="text-xs text-green-600 font-medium mt-0.5">✓ Fichier prêt</p>
+                    </div>
+
+                    <div className="flex-shrink-0 flex items-center gap-2">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      </div>
+                      <label htmlFor="cv-upload" className="cursor-pointer text-xs text-gray-400 hover:text-blue-600 transition-colors underline underline-offset-2">
+                        Remplacer
+                      </label>
+                    </div>
+                  </div>
+                ) : (
                   <label
                     htmlFor="cv-upload"
-                    className="cursor-pointer"
+                    className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl p-6 cursor-pointer transition-all ${
+                      !formData.cv && error
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'
+                    }`}
                   >
-                    <div className="text-4xl mb-2">📄</div>
-                    <p className="text-blue-600 font-semibold mb-1">Déposer votre CV</p>
-                    <p className="text-xs text-gray-500">PDF - Max 5 Mo</p>
-                    {formData.cv && (
-                      <p className="text-sm text-green-600 mt-2">✓ {formData.cv.name}</p>
-                    )}
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${!formData.cv && error ? 'bg-red-100' : 'bg-gray-100'}`}>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={!formData.cv && error ? '#ef4444' : '#6b7280'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="16 16 12 12 8 16"/>
+                        <line x1="12" y1="12" x2="12" y2="21"/>
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+                      </svg>
+                    </div>
+                    <div className="text-center">
+                      <p className={`text-sm font-semibold ${!formData.cv && error ? 'text-red-500' : 'text-blue-600'}`}>
+                        Déposer votre CV
+                      </p>
+                      <p className="text-xs text-gray-400 mt-0.5">PDF uniquement · Max 5 Mo</p>
+                    </div>
                   </label>
-                </div>
+                )}
+
+                <p className={`text-xs mt-1.5 ${!formData.cv && error ? 'text-red-500' : 'text-gray-400'}`}>
+                  {!formData.cv && error
+                    ? '⚠ Obligatoire pour valider votre candidature'
+                    : 'Obligatoire pour valider votre candidature'}
+                </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-800 mb-2">
-                  Lettre de motivation
+                  Lettre de motivation <span className="text-red-500 ml-0.5">*</span>
                 </label>
                 <textarea
                   name="lettre_motivation"
@@ -365,14 +414,22 @@ if (formData.lien_linkedin.trim()) {
                   style={{
                     width: '100%',
                     padding: '14px 16px',
-                    backgroundColor: '#F0F1F5',
-                    border: 'none',
+                    backgroundColor: !formData.lettre_motivation.trim() && error ? '#FEF2F2' : '#F0F1F5',
+                    border: !formData.lettre_motivation.trim() && error ? '2px solid #F87171' : '2px solid transparent',
                     borderRadius: '10px',
                     outline: 'none',
                     color: '#111827',
                     resize: 'none',
+                    transition: 'border-color 0.2s',
                   }}
                 />
+                <p className={`text-xs mt-1.5 ${
+                  !formData.lettre_motivation.trim() && error ? 'text-red-500' : 'text-gray-400'
+                }`}>
+                  {!formData.lettre_motivation.trim() && error
+                    ? '⚠ Obligatoire pour valider votre candidature'
+                    : 'Obligatoire pour valider votre candidature'}
+                </p>
               </div>
             </div>
           </div>
@@ -443,23 +500,20 @@ if (formData.lien_linkedin.trim()) {
         </div>
       </div>
 
-      {/* Footer Buttons - Fixed Bar */}
-      {/* Footer Buttons - Fixed Bar */}
-<div className="bg-white border-t border-gray-200 px-4 py-4">
+      <div className="bg-white/90 backdrop-blur-sm border-t border-gray-200 px-4 py-4 relative z-10">
   <div className="max-w-md mx-auto flex gap-4">
     <button
       onClick={handleBack}
-      disabled={step === 1}
-      className="flex-1 py-3 px-6 rounded-[30px] border border-gray-300 bg-gray-50 text-gray-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+      className="flex-1 py-3 px-6 rounded-[30px] border border-gray-300 bg-gray-50 text-gray-700 font-semibold"
     >
       Retour
     </button>
     <button
       onClick={step === 4 ? handleSubmit : handleNext}
-      disabled={loading}
-      className="flex-1 py-3 px-6 rounded-[30px] bg-blue-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+      disabled={loading || (step === 3 && (!formData.cv || !formData.lettre_motivation.trim()))}
+      className="flex-1 py-3 px-6 rounded-[30px] bg-blue-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-opacity duration-200"
     >
-      {loading ? 'Envoi...' : step === 4 ? 'Continuer' : 'Continuer'}
+      {loading ? 'Envoi...' : step === 4 ? 'Soumettre' : 'Continuer'}
     </button>
   </div>
 </div>
@@ -468,3 +522,4 @@ if (formData.lien_linkedin.trim()) {
 };
 
 export default CandidatureForm;
+

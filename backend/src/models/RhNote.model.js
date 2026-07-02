@@ -1,7 +1,3 @@
-// ============================================================
-// models/RhNote.model.js
-// Modèle pour la table rh_notes
-// ============================================================
 const { query } = require('../config/db');
 
 class RhNote {
@@ -72,3 +68,6 @@ class RhNote {
 }
 
 module.exports = RhNote;
+
+
+

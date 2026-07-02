@@ -1,7 +1,3 @@
-// ============================================================
-// models/Notification.model.js
-// Modèle pour la table notifications
-// ============================================================
 const { query } = require('../config/db');
 
 class Notification {
@@ -68,3 +64,6 @@ class Notification {
 }
 
 module.exports = Notification;
+
+
+

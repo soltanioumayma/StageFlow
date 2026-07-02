@@ -14,15 +14,15 @@ VALUES
     (
         'rh@grouperif.com',
         '$2b$12$KIX9l7CZTzY6FkHq5NrXNeXcWxK3z8GcNH2/JqVS3A.J7V6dOmRyC',
-        'Dupont',
-        'Marie',
+        'Ben Ali',
+        'Fatma',
         'admin'
     ),
     (
         'recruteur@grouperif.com',
         '$2b$12$KIX9l7CZTzY6FkHq5NrXNeXcWxK3z8GcNH2/JqVS3A.J7V6dOmRyC',
-        'Martin',
-        'Jean',
+        'Trabelsi',
+        'Ahmed',
         'recruteur'
     );
 
@@ -92,21 +92,21 @@ VALUES
         'soltani_oumayma_cv.pdf',
         'uploads/cvs/1/soltani_oumayma_cv.pdf',
         512000,
-        'Je souhaite rejoindre Groupe RIF pour développer mes compétences en développement web et contribuer à vos projets innovants.'
+        'Je souhaite rejoindre Groupe RIF Tunisie pour développer mes compétences en développement web et contribuer à vos projets innovants dans la région MENA.'
     ),
     (
         2,
         'soltani_malek_cv.pdf',
         'uploads/cvs/2/soltani_malek_cv.pdf',
         480000,
-        'Étudiant motivé souhaitant acquérir une expérience professionnelle au sein de votre équipe.'
+        'Étudiant motivé de l''ISET Rades souhaitant acquérir une expérience professionnelle au sein de votre équipe tunisienne.'
     ),
     (
         3,
         'soltani_maryem_cv.pdf',
         'uploads/cvs/3/soltani_maryem_cv.pdf',
         620000,
-        'Passionnée de Data Science, je cherche à mettre en pratique mes connaissances sur des projets réels.'
+        'Passionnée de Data Science, je cherche à mettre en pratique mes connaissances sur des projets concrets au sein de Groupe RIF.'
     );
 
 

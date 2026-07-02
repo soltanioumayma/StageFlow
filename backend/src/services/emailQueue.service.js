@@ -1,8 +1,3 @@
-// ============================================================
-// services/emailQueue.service.js
-// Queue d'emails avec mécanisme de retry
-// Pour production, utiliser Bull/Redis pour une vraie queue
-// ============================================================
 
 const { sendEmail } = require('./email.service');
 const logger = require('../utils/logger');
@@ -106,3 +101,6 @@ module.exports = {
   getJobStatus,
   getQueueStats,
 };
+
+
+

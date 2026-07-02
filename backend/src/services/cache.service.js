@@ -1,8 +1,3 @@
-// ============================================================
-// services/cache.service.js
-// Service de cache pour les stats (en mémoire pour démo)
-// Pour production, utiliser Redis
-// ============================================================
 
 const logger = require('../utils/logger');
 
@@ -75,3 +70,6 @@ module.exports = {
   invalidateAllCache,
   getCacheStats,
 };
+
+
+

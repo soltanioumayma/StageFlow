@@ -1,7 +1,3 @@
-// ============================================================
-// utils/responseHandler.js
-// Helpers pour les réponses API standardisées
-// ============================================================
 
 /**
  * Réponse succès
@@ -74,3 +70,6 @@ module.exports = {
   forbiddenResponse,
   conflictResponse,
 };
+
+
+

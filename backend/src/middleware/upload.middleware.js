@@ -1,20 +1,13 @@
-// ============================================================
-// middleware/upload.middleware.js
-// Gère l'upload de fichiers CV avec Multer
-// ============================================================
 const multer = require('multer');
 const path   = require('path');
 const fs     = require('fs');
 
-// Dossier de destination des CVs
 const UPLOAD_DIR = path.join(__dirname, '../../../uploads/cvs');
 
-// Crée le dossier s'il n'existe pas
 if (!fs.existsSync(UPLOAD_DIR)) {
   fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 }
 
-// Configuration du stockage
 const storage = multer.diskStorage({
   // Détermine où stocker le fichier
   destination: (req, file, cb) => {
@@ -29,7 +22,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// Filtre : accepte uniquement les fichiers PDF
 const fileFilter = (req, file, cb) => {
   if (file.mimetype === 'application/pdf') {
     cb(null, true); // Accepté
@@ -38,7 +30,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Instance Multer avec les limites
 const upload = multer({
   storage,
   fileFilter,
@@ -48,3 +39,6 @@ const upload = multer({
 });
 
 module.exports = { upload };
+
+
+

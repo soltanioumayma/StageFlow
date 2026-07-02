@@ -1,15 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import Card from '../components/Card';
-import { SkeletonCard, SkeletonStats } from '../components/Skeleton';
+import { SkeletonCard, SkeletonStats, SkeletonInput } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
 import { hrService } from '../services/hrService';
 import { authService } from '../services/authService';
 
+const POLLING_INTERVAL = 15000;
+
 const RhDashboard = () => {
   const navigate = useNavigate();
   const { error: showError } = useToast();
+
   const [stats, setStats] = useState(null);
   const [candidatures, setCandidatures] = useState([]);
   const [filter, setFilter] = useState('');
@@ -22,6 +24,8 @@ const RhDashboard = () => {
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const intervalRef = useRef(null);
+
   useEffect(() => {
     if (!authService.isAuthenticated()) {
       navigate('/rh/login');
@@ -30,8 +34,28 @@ const RhDashboard = () => {
     loadData();
   }, [filter, search, typeStageFilter, niveauFilter, dateFrom, dateTo, currentPage]);
 
-  const loadData = async () => {
+  useEffect(() => {
+    const startPolling = () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+
+      intervalRef.current = setInterval(() => {
+        loadData(true);
+      }, POLLING_INTERVAL);
+    };
+
+    startPolling();
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [filter, search, typeStageFilter, niveauFilter, dateFrom, dateTo, currentPage]);
+
+  const loadData = async (silent = false) => {
     try {
+      if (!silent) setLoading(true);
+
       const params = new URLSearchParams();
       if (filter) params.append('status', filter);
       if (search) params.append('search', search);
@@ -46,14 +70,15 @@ const RhDashboard = () => {
         hrService.getStats(),
         hrService.listerCandidatures(params.toString()),
       ]);
+
       setStats(statsRes.stats);
       setCandidatures(candidaturesRes.data || []);
       setPagination(candidaturesRes.pagination);
     } catch (err) {
       console.error('Erreur chargement données:', err);
-      showError('Erreur lors du chargement des données');
+      if (!silent) showError('Erreur lors du chargement des données');
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
@@ -66,11 +91,11 @@ const RhDashboard = () => {
     setCurrentPage(newPage);
   };
 
-  // Debounced search handler
   const debouncedSearch = useCallback(
     (value) => {
       const timer = setTimeout(() => {
         setSearch(value);
+        setCurrentPage(1);
       }, 300);
       return () => clearTimeout(timer);
     },
@@ -137,8 +162,14 @@ const RhDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden p-4 md:p-8">
+        {/* Background blobs */}
+        <div className="absolute inset-0 opacity-60 pointer-events-none">
+          <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+          <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="space-y-2">
               <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
@@ -146,13 +177,13 @@ const RhDashboard = () => {
             </div>
             <div className="h-10 bg-gray-200 rounded-xl w-32 animate-pulse" />
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {Array.from({ length: 4 }).map((_, i) => (
               <SkeletonStats key={i} />
             ))}
           </div>
-          
+
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6 mb-6">
             <div className="h-6 bg-gray-200 rounded w-1/4 mb-4 animate-pulse" />
             <div className="grid md:grid-cols-4 gap-4">
@@ -162,7 +193,7 @@ const RhDashboard = () => {
               <SkeletonInput />
             </div>
           </div>
-          
+
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <SkeletonCard key={i} />
@@ -174,9 +205,14 @@ const RhDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden p-4 md:p-8">
+      {/* Background blobs */}
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Espace RH</h1>
@@ -187,7 +223,6 @@ const RhDashboard = () => {
           </Button>
         </div>
 
-        {/* Stats */}
         {stats && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-xl border border-blue-200 shadow-sm hover:shadow-md transition-all duration-300 p-6">
@@ -245,11 +280,9 @@ const RhDashboard = () => {
           </div>
         )}
 
-        {/* Filter Section */}
         <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6 mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Filtres</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Search */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
               <input
@@ -259,8 +292,7 @@ const RhDashboard = () => {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
               />
             </div>
-            
-            {/* Status Filter */}
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Statut</label>
               <select
@@ -274,8 +306,7 @@ const RhDashboard = () => {
                 <option value="refusee">Refusées</option>
               </select>
             </div>
-            
-            {/* Type Stage Filter */}
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Type de stage</label>
               <select
@@ -291,8 +322,7 @@ const RhDashboard = () => {
                 <option value="Autre">Autre</option>
               </select>
             </div>
-            
-            {/* Niveau Filter */}
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Niveau</label>
               <select
@@ -310,8 +340,7 @@ const RhDashboard = () => {
               </select>
             </div>
           </div>
-          
-          {/* Date Filters and Actions */}
+
           <div className="flex flex-col sm:flex-row gap-4 mt-6 items-stretch sm:items-center">
             <div className="flex flex-col sm:flex-row gap-2 sm:items-center w-full sm:w-auto">
               <label className="text-sm font-medium text-gray-700">Date:</label>
@@ -329,12 +358,11 @@ const RhDashboard = () => {
                 className="flex-1 sm:flex-none px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200"
               />
             </div>
-            
+
             <div className="flex gap-3 sm:ml-auto w-full sm:w-auto">
               <Button variant="secondary" onClick={resetFilters} className="flex-1 sm:flex-none shadow-sm hover:shadow-md transition-all duration-200">
                 Réinitialiser
               </Button>
-              
               <Button onClick={handleExportCSV} className="flex-1 sm:flex-none shadow-sm hover:shadow-md transition-all duration-200">
                 Exporter CSV
               </Button>
@@ -342,7 +370,6 @@ const RhDashboard = () => {
           </div>
         </div>
 
-        {/* Candidatures List */}
         <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <h2 className="text-xl font-semibold text-gray-900">Candidatures {pagination && `(${pagination.total} total)`}</h2>
@@ -352,6 +379,7 @@ const RhDashboard = () => {
               </span>
             )}
           </div>
+
           {candidatures.length === 0 ? (
             <div className="text-center py-12">
               <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,7 +401,7 @@ const RhDashboard = () => {
                         <div className="flex items-center gap-3 mb-2">
                           <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300">
                             <span className="text-blue-600 font-semibold text-sm">
-                              {c.prenom[0]}{c.nom[0]}
+                              {c.prenom?.[0]}{c.nom?.[0]}
                             </span>
                           </div>
                           <div>
@@ -412,15 +440,15 @@ const RhDashboard = () => {
                       </div>
                       <div className="flex-shrink-0">
                         <span className={`px-4 py-2 rounded-full text-sm font-semibold shadow-sm ${getStatusColor(c.status)}`}>
-                          {c.status}
+                          {c.status === 'en_attente' ? 'En attente' :
+                           c.status === 'acceptee' ? 'Acceptée' : 'Refusée'}
                         </span>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-              
-              {/* Pagination */}
+
               {pagination && pagination.totalPages > 1 && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mt-8 pt-6 border-t border-gray-200">
                   <Button
@@ -431,20 +459,14 @@ const RhDashboard = () => {
                   >
                     ← Précédent
                   </Button>
-                  
+
                   <div className="flex gap-2 flex-wrap justify-center">
                     {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
-                      let pageNum;
-                      if (pagination.totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (pagination.page <= 3) {
-                        pageNum = i + 1;
-                      } else if (pagination.page >= pagination.totalPages - 2) {
-                        pageNum = pagination.totalPages - 4 + i;
-                      } else {
-                        pageNum = pagination.page - 2 + i;
-                      }
-                      
+                      let pageNum = pagination.page - 2 + i;
+                      if (pagination.totalPages <= 5) pageNum = i + 1;
+                      else if (pagination.page <= 3) pageNum = i + 1;
+                      else if (pagination.page >= pagination.totalPages - 2) pageNum = pagination.totalPages - 4 + i;
+
                       return (
                         <button
                           key={pageNum}
@@ -460,7 +482,7 @@ const RhDashboard = () => {
                       );
                     })}
                   </div>
-                  
+
                   <Button
                     variant="secondary"
                     onClick={() => handlePageChange(pagination.page + 1)}

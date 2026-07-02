@@ -1,7 +1,3 @@
-// ============================================================
-// utils/auditLogger.js
-// Système d'audit logging pour tracer toutes les actions RH
-// ============================================================
 const { Pool } = require('pg');
 const logger = require('./logger');
 
@@ -105,3 +101,6 @@ module.exports = {
   getAuditLogsByUser,
   getAuditLogsByAction,
 };
+
+
+

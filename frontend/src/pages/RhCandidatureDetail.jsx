@@ -54,17 +54,14 @@ const RhCandidatureDetail = () => {
     setShowConfirmDialog(false);
     setDecisionLoading(true);
     
-    // Optimistic UI update - update status immediately
     const previousStatus = dossier.status;
     setDossier({ ...dossier, status: pendingDecision });
     
     try {
       await hrService.prendreDecision(id, pendingDecision);
       success(`Candidature ${pendingDecision === 'acceptee' ? 'acceptée' : 'refusée'} avec succès`);
-      // Reload to get fresh data
       loadDossier();
     } catch (err) {
-      // Revert optimistic update on error
       setDossier({ ...dossier, status: previousStatus });
       error('Erreur lors de la décision');
     } finally {
@@ -80,7 +77,6 @@ const RhCandidatureDetail = () => {
   const handleAddNote = async () => {
     if (!newNote.trim()) return;
     
-    // Optimistic UI - add note immediately
     const tempNote = {
       id: Date.now(),
       note: newNote,
@@ -99,7 +95,6 @@ const RhCandidatureDetail = () => {
       setNotes(notes.map(n => n.id === tempNote.id ? res.note : n));
       success('Note ajoutée avec succès');
     } catch (err) {
-      // Revert on error
       setNotes(previousNotes);
       setNewNote(newNote);
       error('Erreur lors de l\'ajout de la note');
@@ -154,8 +149,13 @@ const RhCandidatureDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-60 pointer-events-none">
+          <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+          <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+        </div>
+        <div className="text-center relative z-10">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Chargement...</p>
         </div>
@@ -165,8 +165,13 @@ const RhCandidatureDetail = () => {
 
   if (!dossier) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md text-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-60 pointer-events-none">
+          <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+          <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+        </div>
+        <Card className="w-full max-w-md text-center relative z-10">
           <p className="text-gray-600 mb-4">Dossier introuvable</p>
           <Button onClick={() => navigate('/rh/dashboard')}>Retour</Button>
         </Card>
@@ -175,9 +180,14 @@ const RhCandidatureDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 md:p-8 relative overflow-hidden">
+      {/* Background blobs */}
+      <div className="absolute inset-0 opacity-60 pointer-events-none">
+        <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
+      </div>
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div className="flex items-center gap-4">
             <Button 
@@ -198,7 +208,6 @@ const RhCandidatureDetail = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Infos candidat */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -228,7 +237,6 @@ const RhCandidatureDetail = () => {
             </div>
           </div>
 
-          {/* Formation */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -260,7 +268,6 @@ const RhCandidatureDetail = () => {
             </div>
           </div>
 
-          {/* Liens */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -318,7 +325,6 @@ const RhCandidatureDetail = () => {
             </div>
           </div>
 
-          {/* Statut et décision */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -359,7 +365,6 @@ const RhCandidatureDetail = () => {
             )}
           </div>
 
-          {/* Documents */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -400,7 +405,6 @@ const RhCandidatureDetail = () => {
             )}
           </div>
 
-          {/* Notes RH */}
           <div className="bg-white rounded-xl border border-blue-200 shadow-sm p-6 md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -411,7 +415,6 @@ const RhCandidatureDetail = () => {
               <h2 className="text-xl font-semibold text-gray-900">Notes RH</h2>
             </div>
             
-            {/* Add new note */}
             <div className="mb-6">
               <textarea
                 value={newNote}
@@ -427,7 +430,6 @@ const RhCandidatureDetail = () => {
               </div>
             </div>
 
-            {/* Notes list */}
             {notes.length === 0 ? (
               <div className="text-center py-8 bg-gray-50 rounded-xl">
                 <svg className="w-12 h-12 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -522,7 +524,6 @@ const RhCandidatureDetail = () => {
           </div>
         </div>
 
-        {/* Custom Confirmation Dialog */}
         {showConfirmDialog && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl border border-blue-200 shadow-2xl max-w-md w-full p-6 transform transition-all">
@@ -565,7 +566,6 @@ const RhCandidatureDetail = () => {
           </div>
         )}
 
-        {/* Success Message */}
         {showSuccessMessage && (
           <div className="fixed top-4 right-4 bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-400 text-green-800 px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3 animate-in slide-in-from-right duration-300">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -575,7 +575,6 @@ const RhCandidatureDetail = () => {
           </div>
         )}
 
-        {/* Error Message */}
         {errorMessage && (
           <div className="fixed top-4 right-4 bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-400 text-red-800 px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3 animate-in slide-in-from-right duration-300">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -590,3 +589,4 @@ const RhCandidatureDetail = () => {
 };
 
 export default RhCandidatureDetail;
+

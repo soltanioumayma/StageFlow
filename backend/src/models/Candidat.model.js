@@ -1,7 +1,3 @@
-// ============================================================
-// models/Candidat.model.js
-// Modèle pour la table candidats
-// ============================================================
 const { query } = require('../config/db');
 
 class Candidat {
@@ -58,3 +54,6 @@ class Candidat {
 }
 
 module.exports = Candidat;
+
+
+

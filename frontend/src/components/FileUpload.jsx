@@ -33,3 +33,4 @@ const FileUpload = ({ label, accept, onChange, error, maxSize = 5 * 1024 * 1024 
 };
 
 export default FileUpload;
+

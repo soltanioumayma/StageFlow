@@ -1,7 +1,3 @@
-// ============================================================
-// models/index.js
-// Centralise tous les modèles pour faciliter les imports
-// ============================================================
 
 const Candidature = require('./Candidature.model');
 const Candidat    = require('./Candidat.model');
@@ -18,3 +14,6 @@ module.exports = {
   Notification,
   RhUser,
 };
+
+
+
