@@ -90,26 +90,42 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
       )}
-      <div className="flex gap-2">
-        <select
-          value={selectedCountry.code}
-          onChange={handleCountryChange}
-          style={{
-            padding: '14px 8px',
-            backgroundColor: '#F0F1F5',
-            border: 'none',
-            borderRadius: '10px',
-            outline: 'none',
-            minWidth: '120px',
-            color: '#111827',
-          }}
-        >
-          {countries.map((country) => (
-            <option key={country.code} value={country.code}>
-              {country.flag} {country.dialCode}
-            </option>
-          ))}
-        </select>
+      <div className="flex gap-2 items-stretch">
+        <div className="relative flex-shrink-0" style={{ minWidth: '110px' }}>
+          <select
+            value={selectedCountry.code}
+            onChange={handleCountryChange}
+            style={{
+              width: '100%',
+              padding: '14px 8px',
+              backgroundColor: '#F0F1F5',
+              border: 'none',
+              borderRadius: '10px',
+              outline: 'none',
+              color: '#111827',
+              fontSize: '14px',
+              appearance: 'none',
+              paddingRight: '24px',
+            }}
+          >
+            {countries.map((country) => (
+              <option key={country.code} value={country.code}>
+                {country.flag} {country.dialCode}
+              </option>
+            ))}
+          </select>
+          <div style={{
+            position: 'absolute',
+            right: '8px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            pointerEvents: 'none',
+            fontSize: '10px',
+            color: '#6B7280',
+          }}>
+            ▼
+          </div>
+        </div>
 
         <input
           type="tel"
@@ -126,6 +142,8 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
             borderRadius: '10px',
             outline: 'none',
             color: '#111827',
+            fontSize: '14px',
+            minWidth: '0',
           }}
         />
       </div>
