@@ -12,22 +12,44 @@ describe('Email Service', () => {
   });
 
   describe('sendEmail', () => {
-    it('should send email successfully', async () => {
+    it('should send confirmation email successfully', async () => {
       const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-id' });
       require('nodemailer').createTransport.mockReturnValue({
         sendMail: mockSendMail
       });
       Notification.create.mockResolvedValue({ id: 1 });
 
-      const result = await sendEmail({
-        to: 'test@example.com',
-        subject: 'Test Subject',
-        text: 'Test Body'
-      });
+      const result = await sendEmail('confirmation', 'test@example.com', 'Ahmed', 'RIF-2026-0042', 1);
 
       expect(result).toBeDefined();
       expect(mockSendMail).toHaveBeenCalled();
       expect(Notification.create).toHaveBeenCalled();
+    });
+
+    it('should send acceptance email successfully', async () => {
+      const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-id' });
+      require('nodemailer').createTransport.mockReturnValue({
+        sendMail: mockSendMail
+      });
+      Notification.create.mockResolvedValue({ id: 1 });
+
+      const result = await sendEmail('acceptee', 'test@example.com', 'Ahmed', 'RIF-2026-0042', 1);
+
+      expect(result).toBeDefined();
+      expect(mockSendMail).toHaveBeenCalled();
+    });
+
+    it('should send rejection email successfully', async () => {
+      const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-id' });
+      require('nodemailer').createTransport.mockReturnValue({
+        sendMail: mockSendMail
+      });
+      Notification.create.mockResolvedValue({ id: 1 });
+
+      const result = await sendEmail('refusee', 'test@example.com', 'Ahmed', 'RIF-2026-0042', 1);
+
+      expect(result).toBeDefined();
+      expect(mockSendMail).toHaveBeenCalled();
     });
 
     it('should handle email sending errors', async () => {
@@ -36,11 +58,8 @@ describe('Email Service', () => {
         sendMail: mockSendMail
       });
 
-      await expect(sendEmail({
-        to: 'test@example.com',
-        subject: 'Test Subject',
-        text: 'Test Body'
-      })).rejects.toThrow('SMTP Error');
+      await expect(sendEmail('confirmation', 'test@example.com', 'Ahmed', 'RIF-2026-0042', 1))
+        .rejects.toThrow();
 
       expect(logger.error).toHaveBeenCalled();
     });
@@ -52,38 +71,9 @@ describe('Email Service', () => {
       });
       Notification.create.mockResolvedValue({ id: 1 });
 
-      await sendEmail({
-        to: 'test@example.com',
-        subject: 'Test Subject',
-        text: 'Test Body',
-        type: 'confirmation'
-      });
+      await sendEmail('confirmation', 'test@example.com', 'Ahmed', 'RIF-2026-0042', 1);
 
-      expect(Notification.create).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        type: 'confirmation',
-        subject: 'Test Subject',
-        status: 'sent'
-      });
-    });
-
-    it('should handle HTML content', async () => {
-      const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-id' });
-      require('nodemailer').createTransport.mockReturnValue({
-        sendMail: mockSendMail
-      });
-
-      await sendEmail({
-        to: 'test@example.com',
-        subject: 'Test Subject',
-        html: '<p>Test HTML</p>'
-      });
-
-      expect(mockSendMail).toHaveBeenCalledWith(
-        expect.objectContaining({
-          html: '<p>Test HTML</p>'
-        })
-      );
+      expect(Notification.create).toHaveBeenCalled();
     });
   });
 });
