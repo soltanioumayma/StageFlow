@@ -51,7 +51,7 @@ const detailCandidature = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Récupère toutes les infos du dossier
+
     const candidature = await Candidature.findById(id);
 
     if (!candidature) {
@@ -99,13 +99,12 @@ const prendreDecision = async (req, res) => {
   const { id }       = req.params;
   const { decision } = req.body;
 
-  // Valide la décision
   if (!['acceptee', 'refusee'].includes(decision)) {
     return errorResponse(res, 'Décision invalide. Valeurs acceptées : "acceptee" ou "refusee".', 400);
   }
 
   try {
-    // Récupère la candidature avec l'email du candidat pour l'email
+
     const candidature = await Candidature.findById(id);
 
     if (!candidature) {
@@ -118,18 +117,14 @@ const prendreDecision = async (req, res) => {
       return notFoundResponse(res, 'Candidat introuvable.');
     }
 
-    // Empêche de changer une décision déjà prise
     if (['acceptee', 'refusee'].includes(candidature.status)) {
       return errorResponse(res, `Une décision a déjà été prise pour ce dossier (${candidature.status}).`, 400);
     }
 
-    // Met à jour le statut
     await Candidature.updateStatus(id, decision);
 
-    // Invalide le cache des stats
     invalidateCache('hr_stats');
 
-    // Envoie l'email de notification au candidat via la queue
     const typeEmail = decision === 'acceptee' ? 'acceptation' : 'refus';
     addToQueue(typeEmail, candidat.email, candidat.prenom, candidature.reference, id)
       .catch((err) => logger.error('Erreur ajout email à la queue', { error: err.message, candidatureId: id }));
@@ -147,18 +142,16 @@ const prendreDecision = async (req, res) => {
 
 const getStats = async (req, res) => {
   try {
-    // Essayer de récupérer du cache
+
     const cacheKey = 'hr_stats';
     const cachedStats = getCachedStats(cacheKey);
     
     if (cachedStats) {
       return successResponse(res, { stats: cachedStats });
     }
-    
-    // Si pas en cache, calculer les stats
+
     const stats = await Candidature.getStats();
-    
-    // Mettre en cache
+
     setCachedStats(cacheKey, stats);
     
     return successResponse(res, { stats });
@@ -229,7 +222,6 @@ const updateNote = async (req, res) => {
       return notFoundResponse(res, 'Note introuvable.');
     }
 
-    // Vérifier que l'utilisateur est le propriétaire de la note
     if (existingNote.rh_user_id !== rh_user_id) {
       return errorResponse(res, 'Vous n\'êtes pas autorisé à modifier cette note', 403);
     }
@@ -253,7 +245,6 @@ const deleteNote = async (req, res) => {
       return notFoundResponse(res, 'Note introuvable.');
     }
 
-    // Vérifier que l'utilisateur est le propriétaire de la note
     if (existingNote.rh_user_id !== rh_user_id) {
       return errorResponse(res, 'Vous n\'êtes pas autorisé à supprimer cette note', 403);
     }

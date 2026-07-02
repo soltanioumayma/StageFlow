@@ -26,7 +26,7 @@ const RhCandidatureDetail = () => {
     try {
       const response = await hrService.detailCandidature(id);
       setDossier(response.dossier);
-      // Load notes
+
       const notesRes = await hrService.getNotes(id);
       setNotes(notesRes.notes || []);
     } catch (err) {

@@ -62,7 +62,6 @@ class Candidature {
     const params = [];
     const conditions = [];
 
-    // Build WHERE clause
     if (filters.status) {
       conditions.push(`c.status = $${params.length + 1}`);
       params.push(filters.status);
@@ -99,7 +98,6 @@ class Candidature {
       params.push(date_to);
     }
 
-    // Build ORDER BY clause
     const validSorts = ['submitted_at', 'nom', 'email', 'reference'];
     const sortField = validSorts.includes(sort) ? sort : 'submitted_at';
     const sortOrder = order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
@@ -113,7 +111,6 @@ class Candidature {
       orderBy = `ORDER BY c.${sortField} ${sortOrder}`;
     }
 
-    // Build the main query
     const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
     
     const countQuery = `
@@ -139,7 +136,6 @@ class Candidature {
 
     params.push(limit, offset);
 
-    // Execute both queries
     const [countResult, dataResult] = await Promise.all([
       query(countQuery, params.slice(0, params.length - 2)),
       query(dataQuery, params)

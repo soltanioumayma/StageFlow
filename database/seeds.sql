@@ -1,14 +1,12 @@
--- ============================================================
--- STAGEFLOW – DONNÉES DE DÉMO (seeds.sql)
--- À exécuter APRÈS schema.sql
--- Données fictives pour la démo et le jury
--- ============================================================
 
 
--- ============================================================
--- 1. Utilisateurs RH
--- Mot de passe pour tous : Admin1234!  (hashé avec bcrypt)
--- ============================================================
+
+
+
+
+
+
+
 INSERT INTO rh_users (email, password_hash, nom, prenom, role)
 VALUES
     (
@@ -27,9 +25,7 @@ VALUES
     );
 
 
--- ============================================================
--- 2. Candidatures (dossiers)
--- ============================================================
+
 INSERT INTO candidatures (reference, status, rgpd_accepted, submitted_at)
 VALUES
     ('RIF-2026-0001', 'en_attente', TRUE, '2026-07-01 09:00:00'),
@@ -37,10 +33,8 @@ VALUES
     ('RIF-2026-0003', 'acceptee',   TRUE, '2026-06-30 14:00:00');
 
 
--- ============================================================
--- 3. Candidats (infos personnelles)
--- Les IDs de candidature sont 1, 2, 3 (SERIAL auto-incrémenté)
--- ============================================================
+
+
 INSERT INTO candidats (candidature_id, prenom, nom, email, telephone)
 VALUES
     (1, 'Oumayma', 'Soltani', 'oumayma.soltani@gmail.com', '+216 20 000 001'),
@@ -48,9 +42,7 @@ VALUES
     (3, 'Maryem',  'Soltani', 'maryem.soltani@gmail.com',  '+216 20 000 003');
 
 
--- ============================================================
--- 4. Formations (profil académique)
--- ============================================================
+
 INSERT INTO formations (candidature_id, etablissement, specialite, niveau, type_stage, lien_github, lien_linkedin)
 VALUES
     (
@@ -82,9 +74,7 @@ VALUES
     );
 
 
--- ============================================================
--- 5. Documents (CV + lettre de motivation)
--- ============================================================
+
 INSERT INTO documents (candidature_id, cv_nom_original, cv_chemin, cv_taille_octets, lettre_motivation)
 VALUES
     (
@@ -110,9 +100,7 @@ VALUES
     );
 
 
--- ============================================================
--- 6. Notifications (emails envoyés)
--- ============================================================
+
 INSERT INTO notifications (candidature_id, type_notif, email_dest, sujet, statut)
 VALUES
     (

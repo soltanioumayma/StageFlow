@@ -9,11 +9,11 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 }
 
 const storage = multer.diskStorage({
-  // Détermine où stocker le fichier
+
   destination: (req, file, cb) => {
     cb(null, UPLOAD_DIR);
   },
-  // Génère un nom de fichier unique pour éviter les collisions
+
   filename: (req, file, cb) => {
     const timestamp  = Date.now();
     const ext        = path.extname(file.originalname); // ".pdf"

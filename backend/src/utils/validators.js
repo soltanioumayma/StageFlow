@@ -46,7 +46,6 @@ const cleanString = (str, toLowerCase = false) => {
 const validateCandidatureData = (data) => {
   const errors = [];
 
-  // Champs obligatoires
   const requiredFields = ['prenom', 'nom', 'email', 'etablissement', 'specialite', 'niveau', 'type_stage'];
   for (const field of requiredFields) {
     if (!isNotEmpty(data[field])) {
@@ -54,17 +53,14 @@ const validateCandidatureData = (data) => {
     }
   }
 
-  // Email
   if (data.email && !isValidEmail(data.email)) {
     errors.push('Email invalide.');
   }
 
-  // Téléphone
   if (data.telephone && !isValidPhone(data.telephone)) {
     errors.push('Numéro de téléphone invalide.');
   }
 
-  // Liens
   if (data.lien_github && !isValidUrl(data.lien_github)) {
     errors.push('Lien GitHub invalide.');
   }
@@ -72,19 +68,16 @@ const validateCandidatureData = (data) => {
     errors.push('Lien LinkedIn invalide.');
   }
 
-  // Niveau
   const niveauxValides = ['BTS', 'Licence', 'Master', 'Ingenieur', 'Doctorat', 'Autre'];
   if (data.niveau && !isInList(data.niveau, niveauxValides)) {
     errors.push(`Niveau "${data.niveau}" non reconnu.`);
   }
 
-  // Type de stage
   const typesStageValides = ['PFE', 'Stage_ete', 'Alternance', 'Observation', 'Autre'];
   if (data.type_stage && !isInList(data.type_stage, typesStageValides)) {
     errors.push(`Type de stage "${data.type_stage}" non reconnu.`);
   }
 
-  // RGPD
   if (data.rgpd_accepted !== 'true' && data.rgpd_accepted !== true) {
     errors.push('Vous devez accepter le traitement RGPD.');
   }

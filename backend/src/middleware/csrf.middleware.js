@@ -9,12 +9,11 @@ const generateCsrfToken = () => {
 
 
 const csrfProtection = (req, res, next) => {
-  // Pour les requêtes GET, génère un nouveau token
+
   if (req.method === 'GET') {
     const token = generateCsrfToken();
     csrfTokens.set(token, Date.now());
-    
-    // Nettoyer les anciens tokens (plus de 1 heure)
+
     const oneHourAgo = Date.now() - 3600000;
     for (const [existingToken, timestamp] of csrfTokens.entries()) {
       if (timestamp < oneHourAgo) {
@@ -26,7 +25,6 @@ const csrfProtection = (req, res, next) => {
     return next();
   }
 
-  // Pour les requêtes POST/PATCH/DELETE, valider le token
   const token = req.headers['x-csrf-token'] || req.body._csrf;
   
   if (!token || !csrfTokens.has(token)) {
@@ -36,7 +34,6 @@ const csrfProtection = (req, res, next) => {
     });
   }
 
-  // Valider que le token n'est pas trop ancien (1 heure)
   const tokenTimestamp = csrfTokens.get(token);
   const oneHourAgo = Date.now() - 3600000;
   
@@ -48,7 +45,6 @@ const csrfProtection = (req, res, next) => {
     });
   }
 
-  // Token valide - consommer le token (one-time use)
   csrfTokens.delete(token);
   next();
 };

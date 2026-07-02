@@ -14,13 +14,11 @@ const rateLimit = (options = {}) => {
     const now = Date.now();
     const windowStart = now - windowMs;
 
-    // Nettoyer les anciennes entrées
     if (rateLimitMap.has(key)) {
       const requests = rateLimitMap.get(key).filter(time => time > windowStart);
       rateLimitMap.set(key, requests);
     }
 
-    // Vérifier le nombre de requêtes
     const requests = rateLimitMap.get(key) || [];
     
     if (requests.length >= max) {
@@ -31,7 +29,6 @@ const rateLimit = (options = {}) => {
       });
     }
 
-    // Ajouter la requête actuelle
     requests.push(now);
     rateLimitMap.set(key, requests);
 

@@ -15,7 +15,6 @@ const transporter = nodemailer.createTransport({
 
 const templates = {
 
-  // ── Confirmation de réception ──────────────────────────────
   confirmation: (prenom, reference) => ({
     sujet: `Candidature reçue – Référence ${reference} | Groupe RIF`,
     corps: `
@@ -66,7 +65,6 @@ const templates = {
     `,
   }),
 
-  // ── Acceptation ────────────────────────────────────────────
   acceptation: (prenom, reference) => ({
     sujet: `Votre candidature a été retenue – Groupe RIF`,
     corps: `
@@ -150,7 +148,6 @@ const templates = {
     `,
   }),
 
-  // ── Refus ──────────────────────────────────────────────────
   refus: (prenom, reference) => ({
     sujet: `Résultat de votre candidature – Groupe RIF`,
     corps: `
@@ -256,13 +253,12 @@ const sendEmail = async (type, emailDest, prenom, reference, candidatureId) => {
     });
     logger.info(`Email "${type}" envoyé à ${emailDest}`, { candidatureId });
   } catch (err) {
-    // On trace l'échec mais on ne bloque pas la candidature
+
     logger.error(`Email "${type}" échoué pour ${emailDest}`, { error: err.message, candidatureId });
     statut = 'echec';
     sendError = err;
   }
 
-  // On trace l'envoi (ou l'échec) dans la base de données
   await Notification.create({
     candidature_id: candidatureId,
     type_notif: type,
@@ -271,7 +267,6 @@ const sendEmail = async (type, emailDest, prenom, reference, candidatureId) => {
     statut,
   });
 
-  // On relance l'erreur pour que la queue (emailQueue.service.js) puisse retry
   if (sendError) {
     throw sendError;
   }
