@@ -1,10 +1,7 @@
 
 const rateLimitMap = new Map();
 
-/**
- * Middleware de rate limiting en mémoire
- * Pour production, utiliser Redis avec express-rate-limit
- */
+
 const rateLimit = (options = {}) => {
   const {
     windowMs = 15 * 60 * 1000, // 15 minutes
@@ -17,13 +14,11 @@ const rateLimit = (options = {}) => {
     const now = Date.now();
     const windowStart = now - windowMs;
 
-    // Nettoyer les anciennes entrées
     if (rateLimitMap.has(key)) {
       const requests = rateLimitMap.get(key).filter(time => time > windowStart);
       rateLimitMap.set(key, requests);
     }
 
-    // Vérifier le nombre de requêtes
     const requests = rateLimitMap.get(key) || [];
     
     if (requests.length >= max) {
@@ -34,7 +29,6 @@ const rateLimit = (options = {}) => {
       });
     }
 
-    // Ajouter la requête actuelle
     requests.push(now);
     rateLimitMap.set(key, requests);
 
@@ -42,9 +36,7 @@ const rateLimit = (options = {}) => {
   };
 };
 
-/**
- * Rate limiting spécifique pour le login (plus strict)
- */
+
 const loginRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // 5 tentatives

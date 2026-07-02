@@ -113,7 +113,6 @@ const soumettreCandidature = async (req, res) => {
       lettre_motivation: lettre_motivation || null,
     });
 
-        // 🔥 FIX CACHE (ICI EST LA CORRECTION DEMANDÉE)
         cacheService.invalidateCache('hr_stats');
     cacheService.invalidateCache('candidatures_stats');
     cacheService.invalidateCache('candidatures:liste');

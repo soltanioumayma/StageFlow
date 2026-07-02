@@ -4,30 +4,23 @@ const RhUser = require('../models/RhUser.model');
 const { successResponse, errorResponse, unauthorizedResponse } = require('../utils/responseHandler');
 const logger = require('../utils/logger'); // ← CORRIGÉ : plus de { logger }
 
-/**
- * POST /api/auth/login
- * Corps : { email, password }
- * Retourne : { token, user }
- */
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validation basique
   if (!email || !password) {
     return errorResponse(res, 'Email et mot de passe requis.', 400);
   }
 
   try {
-    // Cherche l'utilisateur RH par email
+
     const user = await RhUser.findByEmail(email.toLowerCase().trim());
 
-    // Si l'utilisateur n'existe pas
     if (!user) {
       logger.warn('Tentative de connexion avec email inexistant', { email });
       return unauthorizedResponse(res, 'Email ou mot de passe incorrect.');
     }
 
-    // Vérifie le mot de passe hashé
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!passwordMatch) {
@@ -35,21 +28,18 @@ const login = async (req, res) => {
       return unauthorizedResponse(res, 'Email ou mot de passe incorrect.');
     }
 
-    // Génère le token JWT (valable 30 minutes pour la sécurité)
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '30m' }
     );
 
-    // Génère un refresh token (valable 7 jours)
     const refreshToken = jwt.sign(
       { id: user.id, email: user.email, type: 'refresh' },
       process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Retourne le token et les infos de base (sans le mot de passe!)
     logger.info('Connexion réussie', { email, userId: user.id });
     return successResponse(res, {
       token,
@@ -68,10 +58,7 @@ const login = async (req, res) => {
   }
 };
 
-/**
- * GET /api/auth/me
- * Retourne les infos de l'utilisateur connecté (token requis)
- */
+
 const getMe = async (req, res) => {
   try {
     const user = await RhUser.findById(req.user.id);
@@ -87,10 +74,7 @@ const getMe = async (req, res) => {
   }
 };
 
-/**
- * POST /api/auth/refresh
- * Rafraîchit le token d'accès avec le refresh token
- */
+
 const refreshToken = async (req, res) => {
   const { refreshToken: token } = req.body;
 
@@ -110,7 +94,6 @@ const refreshToken = async (req, res) => {
       return errorResponse(res, 'Utilisateur introuvable', 404);
     }
 
-    // Génère un nouveau token d'accès
     const newToken = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,

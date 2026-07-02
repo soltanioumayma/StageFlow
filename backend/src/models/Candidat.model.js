@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class Candidat {
-  /**
-   * Crée un nouveau candidat
-   */
+  
   static async create(data) {
     const { candidature_id, prenom, nom, email, telephone } = data;
     const result = await query(
@@ -15,9 +13,7 @@ class Candidat {
     return result.rows[0];
   }
 
-  /**
-   * Récupère un candidat par ID de candidature
-   */
+  
   static async findByCandidatureId(candidature_id) {
     const result = await query(
       'SELECT * FROM candidats WHERE candidature_id = $1',
@@ -26,9 +22,7 @@ class Candidat {
     return result.rows[0];
   }
 
-  /**
-   * Récupère un candidat par email
-   */
+  
   static async findByEmail(email) {
     const result = await query(
       'SELECT * FROM candidats WHERE LOWER(email) = LOWER($1)',
@@ -37,9 +31,7 @@ class Candidat {
     return result.rows[0];
   }
 
-  /**
-   * Met à jour les informations d'un candidat
-   */
+  
   static async update(candidature_id, data) {
     const { prenom, nom, email, telephone } = data;
     const result = await query(

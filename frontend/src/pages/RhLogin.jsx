@@ -23,8 +23,8 @@ const RhLogin = () => {
       localStorage.setItem('user', JSON.stringify(response.user));
       navigate('/rh/dashboard');
     } catch (err) {
-      // Message générique de l'application pour la sécurité
-      // Ne pas exposer les messages d'erreur du backend
+
+
       setError('Email ou mot de passe incorrect');
     } finally {
       setLoading(false);
@@ -33,7 +33,7 @@ const RhLogin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background blobs */}
+      {}
       <div className="absolute inset-0 opacity-60 pointer-events-none">
         <div className="absolute top-10 -right-20 w-[500px] h-[500px] bg-blue-400 rounded-full blur-[140px]" />
         <div className="absolute -bottom-10 -left-20 w-[500px] h-[500px] bg-indigo-400 rounded-full blur-[140px]" />

@@ -101,7 +101,6 @@ const CandidatureForm = () => {
     return false;
   }
 
-  // GitHub (optionnel) : si rempli, doit être un lien github.com valide
 if (formData.lien_github.trim()) {
   const githubRegex = /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9-]+\/?$/;
   if (!githubRegex.test(formData.lien_github.trim())) {

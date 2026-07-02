@@ -48,7 +48,7 @@ const PhoneInput = ({ label, name = 'telephone', value, onChange, required, erro
       setSelectedCountry(country);
       setPhoneNumber(value.slice(country.dialCode.length));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   const emitChange = (dialCode, number) => {
