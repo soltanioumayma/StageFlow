@@ -30,11 +30,6 @@ const Welcome = () => {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
       </div>
 
-      <div className="h-[47px] bg-white/90 backdrop-blur-md px-6 flex items-center justify-between md:hidden z-10 border-b border-slate-100">
-        <span className="text-slate-900 text-sm font-semibold">9:41</span>
-        <span className="text-slate-900 text-xs">●●● ▮</span>
-      </div>
-
       <div className="flex-1 px-6 py-8 overflow-auto relative z-10">
         <div className="max-w-md mx-auto">
 
