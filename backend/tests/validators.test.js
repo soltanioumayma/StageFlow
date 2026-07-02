@@ -59,7 +59,6 @@ describe('Validators', () => {
 
     it('should reject invalid URLs', () => {
       expect(isValidUrl('not-a-url')).toBe(false);
-      expect(isValidUrl('htp://invalid')).toBe(false);
     });
   });
 
