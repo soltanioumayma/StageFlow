@@ -2,18 +2,14 @@
 
 ## Checkpoint admission (Milieu de Journée 1)
 
-### 📋 Livrables attendus
-- ✅ Prototype Figma interactif
-- ✅ Design System (couleurs, typographies, composants)
-- ✅ Parcours utilisateur complet (User Journey)
+### Livrables attendus
+- Prototype Figma interactif
+- Design System (couleurs, typographies, composants)
+- Parcours utilisateur complet (User Journey)
 
-### 🔗 Liens vers les livrables
+### Liens vers les livrables
 
-**Prototype Figma** :
-```
-[INSÉRER LIEN FIGMA PARTAGÉ ICI]
-Exemple: https://www.figma.com/file/xxxxx/StageFlow-Prototype
-```
+**Prototype Figma** : https://www.figma.com/design/dluMOeZUnDCpIdp2Oyxyyn/StageFlow?node-id=1-2&t=mTq5W3fbKzunZngk-1
 
 **Design System** :
 - Documenté dans le prototype Figma (pages "Design System")
@@ -21,30 +17,30 @@ Exemple: https://www.figma.com/file/xxxxx/StageFlow-Prototype
 - Typographie : Sans-serif (Inter/Roboto)
 - Composants : Boutons, Inputs, Cards, Modals
 
-### 📱 User Journey
+### User Journey
 
-1. **Candidat** :
-   - Accueil → Formulaire candidature (4 étapes)
-   - Étape 1 : Informations personnelles
-   - Étape 2 : Formation et profil
-   - Étape 3 : Upload documents
-   - Étape 4 : Récapitulatif + RGPD
-   - Confirmation avec référence
+**Candidat** :
+- Accueil → Formulaire candidature (4 étapes)
+- Étape 1 : Informations personnelles
+- Étape 2 : Formation et profil
+- Étape 3 : Upload documents
+- Étape 4 : Récapitulatif + RGPD
+- Confirmation avec référence
 
-2. **RH** :
-   - Login sécurisé
-   - Dashboard statistiques
-   - Liste candidatures avec filtres
-   - Détail dossier
-   - Prise de décision
+**RH** :
+- Login sécurisé
+- Dashboard statistiques
+- Liste candidatures avec filtres
+- Détail dossier
+- Prise de décision
 
-### 🎨 Mobile First
+### Mobile First
 - Layout optimisé mobile (320px+)
 - Touch-friendly (min 44px)
 - Responsive adaptatif
 - Accessibilité WCAG AA
 
-### ✅ Critères de validation
+### Critères de validation
 - [ ] Prototype interactif cliquable
 - [ ] Parcours utilisateur complet
 - [ ] Design System cohérent
