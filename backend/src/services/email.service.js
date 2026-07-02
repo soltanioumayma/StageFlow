@@ -2,6 +2,16 @@ const nodemailer = require('nodemailer');
 const Notification = require('../models/Notification.model');
 const logger = require('../utils/logger');
 
+const escapeHtml = (str) => {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
 const transporter = nodemailer.createTransport({
   host:   process.env.EMAIL_HOST || 'smtp.gmail.com',
   port:   parseInt(process.env.EMAIL_PORT) || 587,
@@ -17,7 +27,7 @@ const templates = {
 
   // ── Confirmation de réception ──────────────────────────────
   confirmation: (prenom, reference) => ({
-    sujet: `Candidature reçue – Référence ${reference} | Groupe RIF`,
+    sujet: `Candidature reçue – Référence ${escapeHtml(reference)} | Groupe RIF`,
     corps: `
     <!DOCTYPE html>
     <html lang="fr">
@@ -35,7 +45,7 @@ const templates = {
             </tr>
             <tr>
               <td style="padding:44px 48px 36px;">
-                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Bonjour <strong>${prenom}</strong>,</p>
+                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Bonjour <strong>${escapeHtml(prenom)}</strong>,</p>
                 <p style="margin:0 0 20px;font-size:15px;color:#4b5563;line-height:1.8;">
                   Votre candidature au sein du <strong>Groupe RIF</strong> a bien été enregistrée dans notre système.
                   Nous vous remercions de l'intérêt que vous portez à notre organisation.
@@ -46,7 +56,7 @@ const templates = {
                 </p>
                 <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:24px;text-align:center;margin:0 0 32px;">
                   <p style="margin:0 0 8px;font-size:11px;color:#3b82f6;text-transform:uppercase;letter-spacing:2px;font-weight:700;">Référence de dossier</p>
-                  <p style="margin:0;font-size:32px;font-weight:800;color:#1d4ed8;letter-spacing:4px;">${reference}</p>
+                  <p style="margin:0;font-size:32px;font-weight:800;color:#1d4ed8;letter-spacing:4px;">${escapeHtml(reference)}</p>
                 </div>
                 <p style="margin:0 0 8px;font-size:15px;color:#4b5563;line-height:1.8;">Conservez cette référence et votre adresse e-mail pour consulter l'état de votre candidature.</p>
               </td>
@@ -91,10 +101,10 @@ const templates = {
             <!-- Corps -->
             <tr>
               <td style="padding:44px 48px 12px;">
-                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Madame, Monsieur <strong>${prenom}</strong>,</p>
+                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Madame, Monsieur <strong>${escapeHtml(prenom)}</strong>,</p>
                 <p style="margin:0 0 20px;font-size:15px;color:#4b5563;line-height:1.8;">
                   Nous avons bien reçu et étudié avec la plus grande attention votre candidature
-                  enregistrée sous la référence <strong style="color:#059669;">${reference}</strong>.
+                  enregistrée sous la référence <strong style="color:#059669;">${escapeHtml(reference)}</strong>.
                 </p>
                 <p style="margin:0 0 20px;font-size:15px;color:#4b5563;line-height:1.8;">
                   C'est avec grand plaisir que nous vous informons que votre profil a été sélectionné
@@ -139,7 +149,7 @@ const templates = {
                 <p style="margin:0 0 2px;font-size:14px;font-weight:700;color:#111827;">Direction des Ressources Humaines</p>
                 <p style="margin:0 0 2px;font-size:13px;font-weight:600;color:#059669;">Groupe RIF</p>
                 <p style="margin:0 0 2px;font-size:12px;color:#6b7280;">rh@grouperif.com</p>
-                <p style="margin:0;font-size:11px;color:#9ca3af;">Réf. dossier : ${reference}</p>
+                <p style="margin:0;font-size:11px;color:#9ca3af;">Réf. dossier : ${escapeHtml(reference)}</p>
               </td>
             </tr>
           </table>
@@ -174,11 +184,11 @@ const templates = {
             <!-- Corps -->
             <tr>
               <td style="padding:44px 48px 28px;">
-                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Madame, Monsieur <strong>${prenom}</strong>,</p>
+                <p style="margin:0 0 24px;font-size:16px;color:#111827;line-height:1.6;">Madame, Monsieur <strong>${escapeHtml(prenom)}</strong>,</p>
                 <p style="margin:0 0 20px;font-size:15px;color:#4b5563;line-height:1.8;">
                   Nous vous remercions sincèrement de l'intérêt que vous avez manifesté à l'égard du
                   <strong>Groupe RIF</strong>, ainsi que du soin apporté à la constitution de votre dossier
-                  de candidature (réf. <strong>${reference}</strong>).
+                  de candidature (réf. <strong>${escapeHtml(reference)}</strong>).
                 </p>
                 <p style="margin:0 0 20px;font-size:15px;color:#4b5563;line-height:1.8;">
                   Après une analyse attentive de votre profil par notre équipe de recrutement, nous avons
@@ -226,7 +236,7 @@ const templates = {
                 <p style="margin:0 0 2px;font-size:14px;font-weight:700;color:#111827;">Direction des Ressources Humaines</p>
                 <p style="margin:0 0 2px;font-size:13px;font-weight:600;color:#374151;">Groupe RIF</p>
                 <p style="margin:0 0 2px;font-size:12px;color:#6b7280;">rh@grouperif.com</p>
-                <p style="margin:0;font-size:11px;color:#9ca3af;">Réf. dossier : ${reference}</p>
+                <p style="margin:0;font-size:11px;color:#9ca3af;">Réf. dossier : ${escapeHtml(reference)}</p>
               </td>
             </tr>
           </table>
@@ -285,5 +295,3 @@ const sendEmail = async (type, emailDest, prenom, reference, candidatureId) => {
 };
 
 module.exports = { sendEmail };
-
-
