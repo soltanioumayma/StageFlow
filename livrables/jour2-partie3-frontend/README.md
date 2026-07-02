@@ -1,14 +1,6 @@
 # Livrables - Jour 2 Partie 3 : Développement Frontend & Logique Métier
 
-## Checkpoint admission (Milieu de Journée 2)
-
-### Livrables attendus
-- Interface utilisateur dynamique codée
-- Formulaire complexe avec contrôles de surface
-- Persistance des données en base
-- Code source poussé sur Git
-
-### Liens vers les livrables
+## Liens vers les livrables
 
 **Code Frontend** : https://github.com/soltanioumayma/StageFlow/tree/main/frontend
 
@@ -16,7 +8,7 @@
 
 **Dépôt Git complet** : https://github.com/soltanioumayma/StageFlow
 
-### Fonctionnalités implémentées
+## Fonctionnalités implémentées
 
 **Candidat** :
 - Formulaire multi-étapes (4 étapes)
@@ -32,13 +24,13 @@
 - Détail dossier complet
 - Prise de décision (accepter/refuser)
 
-### Stack Technique
+## Stack Technique
 
 **Frontend** : React 18 + Vite + Tailwind CSS + React Router + React Hook Form + Axios
 
 **Backend** : Node.js + Express + PostgreSQL + JWT Auth + Multer + Nodemailer
 
-### Démo - Saisie de données
+## Démo - Saisie de données
 
 ```bash
 # Backend
@@ -55,11 +47,3 @@ http://localhost:3000
 1. Remplir formulaire candidature (4 étapes)
 2. Soumettre → Référence générée (ex: RIF-2026-0042)
 3. Vérifier persistance en base : SELECT * FROM candidatures WHERE reference = 'RIF-2026-0042';
-
-### Critères de validation
-- [ ] Interface fidèle aux maquettes Figma
-- [ ] Formulaire multi-étapes fonctionnel
-- [ ] Données persistées en base
-- [ ] Code propre et modulaire
-- [ ] Mobile First responsive
-- [ ] Code versionné sur Git

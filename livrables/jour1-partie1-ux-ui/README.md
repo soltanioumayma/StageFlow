@@ -1,13 +1,6 @@
 # Livrables - Jour 1 Partie 1 : UX/UI Design & Maquettage
 
-## Checkpoint admission (Milieu de Journée 1)
-
-### Livrables attendus
-- Prototype Figma interactif
-- Design System (couleurs, typographies, composants)
-- Parcours utilisateur complet (User Journey)
-
-### Liens vers les livrables
+## Liens vers les livrables
 
 **Prototype Figma** : https://www.figma.com/design/dluMOeZUnDCpIdp2Oyxyyn/StageFlow?node-id=1-2&t=mTq5W3fbKzunZngk-1
 
@@ -17,7 +10,7 @@
 - Typographie : Sans-serif (Inter/Roboto)
 - Composants : Boutons, Inputs, Cards, Modals
 
-### User Journey
+## User Journey
 
 **Candidat** :
 - Accueil → Formulaire candidature (4 étapes)
@@ -34,15 +27,8 @@
 - Détail dossier
 - Prise de décision
 
-### Mobile First
+## Mobile First
 - Layout optimisé mobile (320px+)
 - Touch-friendly (min 44px)
 - Responsive adaptatif
 - Accessibilité WCAG AA
-
-### Critères de validation
-- [ ] Prototype interactif cliquable
-- [ ] Parcours utilisateur complet
-- [ ] Design System cohérent
-- [ ] Mobile First respecté
-- [ ] Accessibilité vérifiée

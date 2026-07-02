@@ -1,14 +1,6 @@
 # Livrables - Jour 1 Partie 2 : Analyse Technique & Setup Base de Données
 
-## Checkpoint admission (Fin de Journée 1)
-
-### Livrables attendus
-- Diagramme de classe / Schéma entité-association
-- Structure de base de données initialisée
-- Connexion réussie IDE ↔ Base de données
-- Code versionné dans Git
-
-### Liens vers les livrables
+## Liens vers les livrables
 
 **Diagramme de classe PlantUML** : ../diagramme_classe.puml
 Pour générer l'image : https://plantuml.com/online
@@ -19,7 +11,7 @@ Pour générer l'image : https://plantuml.com/online
 
 **Dépôt Git** : https://github.com/soltanioumayma/StageFlow
 
-### Structure de la base de données
+## Structure de la base de données
 
 7 tables relationnelles :
 1. rh_users - Comptes RH
@@ -30,7 +22,7 @@ Pour générer l'image : https://plantuml.com/online
 6. notifications - Emails envoyés
 7. rh_notes - Notes internes RH
 
-### Connexion Base de Données
+## Connexion Base de Données
 
 **Configuration** : backend/src/config/database.js
 - Host : localhost
@@ -39,7 +31,7 @@ Pour générer l'image : https://plantuml.com/online
 - User : postgres
 - Password : [voir .env]
 
-### Tests de validation
+## Tests de validation
 
 ```bash
 # Test connexion PostgreSQL
@@ -51,10 +43,3 @@ psql -U postgres -d stageflow -c "\dt"
 # Test seeds
 psql -U postgres -d stageflow -f database/seeds.sql
 ```
-
-### Critères de validation
-- [ ] Diagramme de classe clair et complet
-- [ ] Schéma SQL versionné dans Git
-- [ ] Base de données créée et accessible
-- [ ] Tables et contraintes correctes
-- [ ] Connexion IDE ↔ BDD fonctionnelle

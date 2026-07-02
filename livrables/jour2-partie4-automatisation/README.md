@@ -1,20 +1,12 @@
 # Livrables - Jour 2 Partie 4 : Automatisation, Sécurité & Démo Finale
 
-## Checkpoint admission (Fin de Journée 2 - Présentation finale)
-
-### Livrables attendus
-- Module d'automatisation (emails, notifications)
-- Sécurité des entrées (validation, anti-injection)
-- Démo parcours complet bout-en-bout
-- Argumentaire technique justifiant les choix
-
-### Liens vers les livrables
+## Liens vers les livrables
 
 **Code final complet** : https://github.com/soltanioumayma/StageFlow
 
 **Argumentaire technique** : ../../docs/ARGUMENTAIRE_SOUTENANCE.md
 
-### Automatisation implémentée
+## Automatisation implémentée
 
 **Génération de référence unique** :
 - Service : backend/src/services/reference.service.js
@@ -31,7 +23,7 @@
 - Actions : acceptee / refusee
 - Effets : Mise à jour statut + Email automatique + Notification en base
 
-### Sécurité implémentée
+## Sécurité implémentée
 
 **Backend** :
 - Authentification : JWT avec expiration 8h
@@ -45,7 +37,7 @@
 - Validation client : React Hook Form
 - Token storage : localStorage avec intercepteur Axios
 
-### Démo Finale - Parcours complet
+## Démo Finale - Parcours complet
 
 **Scénario bout-en-bout** :
 1. Candidat soumet dossier (4 étapes) → Référence générée → Email confirmation
@@ -54,7 +46,7 @@
 4. RH consulte et décide (acceptee/refusee)
 5. Automatisation déclenchée → Email envoyé + Notification tracée
 
-### Commandes pour la démo
+## Commandes pour la démo
 
 ```bash
 # Backend
@@ -70,11 +62,3 @@ psql -U postgres -d stageflow -f database/seeds.sql
 
 URLs : Frontend http://localhost:3000 | Backend http://localhost:5000
 Compte RH : rh@grouperif.com / Admin1234!
-
-### Critères de validation
-- [ ] Automatisation fonctionne sans crash
-- [ ] Emails envoyés correctement
-- [ ] Sécurité inputs validée
-- [ ] Parcours complet fonctionnel
-- [ ] Argumentaire technique préparé
-- [ ] Code final propre sur Git
