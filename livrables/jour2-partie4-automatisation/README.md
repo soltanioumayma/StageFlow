@@ -1,6 +1,6 @@
 # Livrables - Jour 2 Partie 4 : Automatisation, Sécurité & Démo Finale
 
-## Checkpoint admission (Fin de Journée 2 - Soutenance Finale)
+## Checkpoint admission (Fin de Journée 2 - Présentation finale)
 
 ### Livrables attendus
 - Module d'automatisation (emails, notifications)
