@@ -22,15 +22,20 @@ const RhCandidatureDetail = () => {
     loadDossier();
   }, [id]);
 
+  const [loadError, setLoadError] = useState(null);
+
   const loadDossier = async () => {
     try {
+      setLoadError(null);
       const response = await hrService.detailCandidature(id);
       setDossier(response.dossier);
 
       const notesRes = await hrService.getNotes(id);
       setNotes(notesRes.notes || []);
     } catch (err) {
-      console.error('Erreur chargement dossier:', err);
+      const message = err.response?.data?.message || 'Erreur lors du chargement du dossier';
+      setLoadError(message);
+      error(message);
     } finally {
       setLoading(false);
     }
@@ -172,8 +177,15 @@ const RhCandidatureDetail = () => {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:60px_60px] opacity-30" />
         </div>
         <Card className="w-full max-w-md text-center relative z-10">
-          <p className="text-gray-600 mb-4">Dossier introuvable</p>
-          <Button onClick={() => navigate('/rh/dashboard')}>Retour</Button>
+          <p className="text-gray-600 mb-4">
+            {loadError || 'Dossier introuvable'}
+          </p>
+          {loadError && (
+            <Button onClick={() => { setLoading(true); loadDossier(); }} className="mr-2">
+              Réessayer
+            </Button>
+          )}
+          <Button variant="secondary" onClick={() => navigate('/rh/dashboard')}>Retour</Button>
         </Card>
       </div>
     );

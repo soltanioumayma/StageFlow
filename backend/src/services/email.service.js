@@ -259,13 +259,21 @@ const sendEmail = async (type, emailDest, prenom, reference, candidatureId) => {
     sendError = err;
   }
 
-  await Notification.create({
-    candidature_id: candidatureId,
-    type_notif: type,
-    email_dest: emailDest,
-    sujet: template.sujet,
-    statut,
-  });
+  try {
+    await Notification.create({
+      candidature_id: candidatureId,
+      type_notif: type,
+      email_dest: emailDest,
+      sujet: template.sujet,
+      statut,
+    });
+  } catch (notifErr) {
+    logger.error(`Erreur enregistrement notification "${type}"`, {
+      error: notifErr.message,
+      candidatureId,
+      emailDest,
+    });
+  }
 
   if (sendError) {
     throw sendError;

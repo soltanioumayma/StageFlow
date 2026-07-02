@@ -43,42 +43,32 @@ const logAudit = async (data) => {
     return result.rows[0].id;
   } catch (err) {
     logger.error('Erreur enregistrement audit log', { error: err.message, action, user_id });
-
+    return null;
   }
 };
 
 
 const getAuditLogsByUser = async (userId, limit = 100) => {
-  try {
-    const query = `
-      SELECT * FROM audit_logs
-      WHERE user_id = $1
-      ORDER BY created_at DESC
-      LIMIT $2
-    `;
-    const result = await pool.query(query, [userId, limit]);
-    return result.rows;
-  } catch (err) {
-    logger.error('Erreur récupération audit logs', { error: err.message, userId });
-    return [];
-  }
+  const sql = `
+    SELECT * FROM audit_logs
+    WHERE user_id = $1
+    ORDER BY created_at DESC
+    LIMIT $2
+  `;
+  const result = await pool.query(sql, [userId, limit]);
+  return result.rows;
 };
 
 
 const getAuditLogsByAction = async (action, limit = 100) => {
-  try {
-    const query = `
-      SELECT * FROM audit_logs
-      WHERE action = $1
-      ORDER BY created_at DESC
-      LIMIT $2
-    `;
-    const result = await pool.query(query, [action, limit]);
-    return result.rows;
-  } catch (err) {
-    logger.error('Erreur récupération audit logs par action', { error: err.message, action });
-    return [];
-  }
+  const sql = `
+    SELECT * FROM audit_logs
+    WHERE action = $1
+    ORDER BY created_at DESC
+    LIMIT $2
+  `;
+  const result = await pool.query(sql, [action, limit]);
+  return result.rows;
 };
 
 module.exports = {

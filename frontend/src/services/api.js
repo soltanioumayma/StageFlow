@@ -31,8 +31,11 @@ api.interceptors.response.use(
   async (error) => {
     const config = error.config;
 
+    // Ne pas retry pour les requêtes de login
     const isLoginRequest = config?.url?.includes('/auth/login');
-    if (!config._retry && !isLoginRequest && config._retryCount < MAX_RETRIES) {
+    const retryCount = config?._retryCount || 0;
+
+    if (!isLoginRequest && retryCount < MAX_RETRIES) {
       const shouldRetry =
         !error.response ||
         error.response.status >= 500 ||
@@ -40,9 +43,9 @@ api.interceptors.response.use(
         error.code === 'NETWORK_ERROR';
 
       if (shouldRetry) {
-        config._retry = true;
-        config._retryCount = (config._retryCount || 0) + 1;
+        config._retryCount = retryCount + 1;
 
+        // Délai exponentiel
         await delay(RETRY_DELAY * config._retryCount);
 
         return api(config);

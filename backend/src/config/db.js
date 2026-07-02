@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const logger = require('../utils/logger');
 
 const pool = new Pool({
   host:     process.env.DB_HOST     || 'localhost',
@@ -8,11 +9,17 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || 'postgres',
 });
 
+// Log les erreurs de connexion au niveau du pool
+pool.on('error', (err) => {
+  logger.error('Erreur inattendue sur le pool PostgreSQL', { error: err.message });
+});
+
 pool.connect((err, client, release) => {
   if (err) {
-    console.error(' Impossible de se connecter à PostgreSQL :', err.message);
+    logger.error('Impossible de se connecter à PostgreSQL', { error: err.message });
+    process.exit(1);
   } else {
-    console.log(' Connecté à PostgreSQL – base de données : stageflow');
+    logger.info('Connecté à PostgreSQL', { database: process.env.DB_NAME || 'stageflow' });
     release();
   }
 });
@@ -20,6 +27,3 @@ pool.connect((err, client, release) => {
 const query = (text, params) => pool.query(text, params);
 
 module.exports = { query, pool };
-
-
-
