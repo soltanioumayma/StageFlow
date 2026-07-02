@@ -239,14 +239,7 @@ const templates = {
 };
 
 
-/**
- * Envoie un email et le trace dans la table "notifications"
- * @param {string} type       - 'confirmation' | 'acceptation' | 'refus'
- * @param {string} emailDest  - Email du destinataire
- * @param {string} prenom     - Prénom du candidat
- * @param {string} reference  - Référence du dossier
- * @param {number} candidatureId - ID du dossier en base
- */
+
 const sendEmail = async (type, emailDest, prenom, reference, candidatureId) => {
   const template = templates[type](prenom, reference);
 

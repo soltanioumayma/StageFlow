@@ -2,16 +2,12 @@ const crypto = require('crypto');
 
 const csrfTokens = new Map();
 
-/**
- * Génère un token CSRF
- */
+
 const generateCsrfToken = () => {
   return crypto.randomBytes(32).toString('hex');
 };
 
-/**
- * Middleware pour générer et valider les tokens CSRF
- */
+
 const csrfProtection = (req, res, next) => {
   // Pour les requêtes GET, génère un nouveau token
   if (req.method === 'GET') {

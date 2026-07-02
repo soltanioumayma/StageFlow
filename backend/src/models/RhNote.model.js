@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class RhNote {
-  /**
-   * Crée une nouvelle note RH
-   */
+  
   static async create(data) {
     const { candidature_id, rh_user_id, note } = data;
     const result = await query(
@@ -15,9 +13,7 @@ class RhNote {
     return result.rows[0];
   }
 
-  /**
-   * Récupère toutes les notes pour une candidature
-   */
+  
   static async findByCandidatureId(candidature_id) {
     const result = await query(
       `SELECT rn.*, ru.prenom, ru.nom 
@@ -30,9 +26,7 @@ class RhNote {
     return result.rows;
   }
 
-  /**
-   * Met à jour une note
-   */
+  
   static async update(id, note) {
     const result = await query(
       `UPDATE rh_notes 
@@ -44,9 +38,7 @@ class RhNote {
     return result.rows[0];
   }
 
-  /**
-   * Supprime une note
-   */
+  
   static async delete(id) {
     const result = await query(
       'DELETE FROM rh_notes WHERE id = $1 RETURNING *',
@@ -55,9 +47,7 @@ class RhNote {
     return result.rows[0];
   }
 
-  /**
-   * Récupère une note par ID
-   */
+  
   static async findById(id) {
     const result = await query(
       'SELECT * FROM rh_notes WHERE id = $1',

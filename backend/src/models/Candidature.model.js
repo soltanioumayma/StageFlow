@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class Candidature {
-  /**
-   * Crée une nouvelle candidature
-   */
+  
   static async create(data) {
     const { reference, status = 'en_attente', rgpd_accepted = true } = data;
     const result = await query(
@@ -15,9 +13,7 @@ class Candidature {
     return result.rows[0];
   }
 
-  /**
-   * Récupère une candidature par ID
-   */
+  
   static async findById(id) {
     const result = await query(
       'SELECT * FROM candidatures WHERE id = $1',
@@ -26,9 +22,7 @@ class Candidature {
     return result.rows[0];
   }
 
-  /**
-   * Récupère une candidature par référence
-   */
+  
   static async findByReference(reference) {
     const result = await query(
       'SELECT * FROM candidatures WHERE reference = $1',
@@ -37,9 +31,7 @@ class Candidature {
     return result.rows[0];
   }
 
-  /**
-   * Met à jour le statut d'une candidature
-   */
+  
   static async updateStatus(id, status) {
     const result = await query(
       `UPDATE candidatures 
@@ -51,9 +43,7 @@ class Candidature {
     return result.rows[0];
   }
 
-  /**
-   * Liste toutes les candidatures avec filtres avancés, recherche et pagination
-   */
+  
   static async findAllWithFilters(options = {}) {
     const {
       filters = {},
@@ -171,9 +161,7 @@ class Candidature {
     };
   }
 
-  /**
-   * Liste toutes les candidatures avec filtre optionnel (legacy method)
-   */
+  
   static async findAll(filters = {}) {
     let sql = 'SELECT * FROM candidatures';
     const params = [];
@@ -194,9 +182,7 @@ class Candidature {
     return result.rows;
   }
 
-  /**
-   * Compte les candidatures par statut
-   */
+  
   static async getStats() {
     const result = await query(
       `SELECT
@@ -209,9 +195,7 @@ class Candidature {
     return result.rows[0];
   }
 
-  /**
-   * Récupère la dernière référence de l'année
-   */
+  
   static async getLastReferenceOfYear(year) {
     const prefix = `RIF-${year}-`;
     const result = await query(

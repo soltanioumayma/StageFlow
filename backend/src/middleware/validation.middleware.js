@@ -1,9 +1,7 @@
 const { body, param, query, validationResult } = require('express-validator');
 const { validationResponse } = require('../utils/responseHandler');
 
-/**
- * Middleware qui vérifie les résultats de validation
- */
+
 const validateRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -16,9 +14,7 @@ const validateRequest = (req, res, next) => {
   next();
 };
 
-/**
- * Validation pour la connexion
- */
+
 const validateLogin = [
   body('email')
     .trim()
@@ -34,9 +30,7 @@ const validateLogin = [
   validateRequest,
 ];
 
-/**
- * Validation pour la soumission de candidature
- */
+
 const validateCandidature = [
   body('prenom')
     .trim()
@@ -108,9 +102,7 @@ const validateCandidature = [
   validateRequest,
 ];
 
-/**
- * Validation pour le suivi de candidature
- */
+
 const validateSuivi = [
   query('reference')
     .trim()
@@ -127,9 +119,7 @@ const validateSuivi = [
   validateRequest,
 ];
 
-/**
- * Validation pour l'ID de candidature
- */
+
 const validateCandidatureId = [
   param('id')
     .isInt({ min: 1 })
@@ -137,9 +127,7 @@ const validateCandidatureId = [
   validateRequest,
 ];
 
-/**
- * Validation pour la décision RH
- */
+
 const validateDecision = [
   param('id')
     .isInt({ min: 1 })

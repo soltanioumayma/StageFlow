@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class Document {
-  /**
-   * Crée un nouveau document
-   */
+  
   static async create(data) {
     const {
       candidature_id,
@@ -22,9 +20,7 @@ class Document {
     return result.rows[0];
   }
 
-  /**
-   * Récupère un document par ID de candidature
-   */
+  
   static async findByCandidatureId(candidature_id) {
     const result = await query(
       'SELECT * FROM documents WHERE candidature_id = $1',
@@ -33,9 +29,7 @@ class Document {
     return result.rows[0];
   }
 
-  /**
-   * Met à jour les informations du document
-   */
+  
   static async update(candidature_id, data) {
     const {
       cv_nom_original,
@@ -53,9 +47,7 @@ class Document {
     return result.rows[0];
   }
 
-  /**
-   * Supprime le CV d'une candidature
-   */
+  
   static async deleteCV(candidature_id) {
     const result = await query(
       `UPDATE documents 
