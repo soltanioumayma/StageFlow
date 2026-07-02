@@ -25,8 +25,7 @@ const addToQueue = async (type, email, prenom, reference, candidatureId) => {
   
   emailQueue.set(jobId, job);
   logger.info('Email ajouté à la queue', { jobId, type, email });
-  
-  // Traiter le job
+
   processJob(jobId);
   
   return jobId;
@@ -45,8 +44,7 @@ const processJob = async (jobId) => {
     job.status = 'completed';
     job.completedAt = new Date();
     logger.info('Email envoyé avec succès', { jobId, type: job.type });
-    
-    // Supprimer le job après un délai
+
     setTimeout(() => emailQueue.delete(jobId), 60000);
   } catch (err) {
     logger.error('Erreur envoi email', { jobId, error: err.message, attempt: job.attempts });
@@ -55,8 +53,7 @@ const processJob = async (jobId) => {
       job.status = 'retrying';
       job.nextRetryAt = new Date(Date.now() + RETRY_DELAY * job.attempts);
       logger.info('Email en retry', { jobId, nextRetryAt: job.nextRetryAt });
-      
-      // Retarder le retry
+
       setTimeout(() => processJob(jobId), RETRY_DELAY * job.attempts);
     } else {
       job.status = 'failed';

@@ -23,8 +23,8 @@ const RhLogin = () => {
       localStorage.setItem('user', JSON.stringify(response.user));
       navigate('/rh/dashboard');
     } catch (err) {
-      // Message générique de l'application pour la sécurité
-      // Ne pas exposer les messages d'erreur du backend
+
+
       setError('Email ou mot de passe incorrect');
     } finally {
       setLoading(false);

@@ -43,7 +43,7 @@ const logAudit = async (data) => {
     return result.rows[0].id;
   } catch (err) {
     logger.error('Erreur enregistrement audit log', { error: err.message, action, user_id });
-    // Ne pas bloquer l'application si l'audit échoue
+
   }
 };
 

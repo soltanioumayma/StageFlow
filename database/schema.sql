@@ -1,15 +1,13 @@
--- ============================================================
--- STAGEFLOW – DATABASE SCHEMA (Student Edition)
--- Base de données : PostgreSQL
--- 6 tables simples, faciles à expliquer au jury
--- ============================================================
 
 
--- ============================================================
--- TABLE 1 : rh_users
--- QUI : Les recruteurs RH (Screens 09, 10, 11)
--- QUOI : Compte de connexion de l'espace recruteur
--- ============================================================
+
+
+
+
+
+
+
+
 CREATE TABLE rh_users (
     id            SERIAL          PRIMARY KEY,
     email         VARCHAR(255)    NOT NULL UNIQUE,
@@ -22,12 +20,10 @@ CREATE TABLE rh_users (
 );
 
 
--- ============================================================
--- TABLE 2 : candidatures
--- QUI : Le dossier de candidature (table centrale)
--- QUOI : Une ligne = une candidature. Contient le statut et
---        la référence visible par le candidat (ex: RIF-2026-0042)
--- ============================================================
+
+
+
+
 CREATE TABLE candidatures (
     id            SERIAL          PRIMARY KEY,
     reference     VARCHAR(20)     NOT NULL UNIQUE,   -- ex: RIF-2026-0042
@@ -39,13 +35,11 @@ CREATE TABLE candidatures (
 );
 
 
--- ============================================================
--- TABLE 3 : candidats
--- QUI : Le candidat (Screens 03 – Etape 1/4)
--- QUOI : Informations personnelles. Séparée de candidatures
---        pour respecter le RGPD (on peut supprimer les données
---        personnelles sans perdre le dossier)
--- ============================================================
+
+
+
+
+
 CREATE TABLE candidats (
     id              SERIAL          PRIMARY KEY,
     candidature_id  INT             NOT NULL UNIQUE, -- 1 candidat = 1 candidature
@@ -58,12 +52,10 @@ CREATE TABLE candidats (
 );
 
 
--- ============================================================
--- TABLE 4 : formations
--- QUI : Le profil académique (Screen 04 – Etape 2/4)
--- QUOI : Établissement, spécialité, niveau, type de stage,
---        liens GitHub et LinkedIn
--- ============================================================
+
+
+
+
 CREATE TABLE formations (
     id              SERIAL          PRIMARY KEY,
     candidature_id  INT             NOT NULL UNIQUE, -- 1 formation = 1 candidature
@@ -80,12 +72,10 @@ CREATE TABLE formations (
 );
 
 
--- ============================================================
--- TABLE 5 : documents
--- QUI : Les fichiers du dossier (Screen 05 – Etape 3/4)
--- QUOI : Chemin du CV uploadé + lettre de motivation
---        On stocke les métadonnées, pas le fichier lui-même
--- ============================================================
+
+
+
+
 CREATE TABLE documents (
     id                  SERIAL          PRIMARY KEY,
     candidature_id      INT             NOT NULL UNIQUE, -- 1 document = 1 candidature
@@ -98,12 +88,10 @@ CREATE TABLE documents (
 );
 
 
--- ============================================================
--- TABLE 6 : notifications
--- QUI : Les emails envoyés automatiquement (Axe 3 – automatisation)
--- QUOI : Chaque email envoyé est tracé ici (confirmation,
---        acceptation, refus). C'est le "journal des envois".
--- ============================================================
+
+
+
+
 CREATE TABLE notifications (
     id              SERIAL          PRIMARY KEY,
     candidature_id  INT             NOT NULL,
@@ -119,12 +107,10 @@ CREATE TABLE notifications (
 );
 
 
--- ============================================================
--- TABLE 7 : rh_notes
--- QUI : Notes privées des recruteurs RH
--- QUOI : Commentaires internes sur les candidatures (points forts,
---        raisons de refus, notes d'entretien, etc.)
--- ============================================================
+
+
+
+
 CREATE TABLE rh_notes (
     id              SERIAL          PRIMARY KEY,
     candidature_id  INT             NOT NULL,
@@ -138,9 +124,7 @@ CREATE TABLE rh_notes (
 );
 
 
--- ============================================================
--- INDEX  : accélérer les recherches fréquentes
--- ============================================================
+
 CREATE INDEX idx_candidatures_status    ON candidatures (status);
 CREATE INDEX idx_candidatures_reference ON candidatures (reference);
 CREATE INDEX idx_candidats_email        ON candidats (email);
@@ -148,11 +132,9 @@ CREATE INDEX idx_rh_notes_candidature   ON rh_notes (candidature_id);
 CREATE INDEX idx_rh_notes_user          ON rh_notes (rh_user_id);
 
 
--- ============================================================
--- TABLE 8 : audit_logs
--- QUI : Système d'audit pour tracer toutes les actions RH
--- QUOI : Logs de sécurité et conformité pour entreprise
--- ============================================================
+
+
+
 CREATE TABLE audit_logs (
     id            SERIAL          PRIMARY KEY,
     action        VARCHAR(50)     NOT NULL,

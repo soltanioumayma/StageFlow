@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const protect = (req, res, next) => {
   const authHeader = req.headers['authorization'];
 
-  // Vérifie que le header Authorization existe et commence par "Bearer "
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
       success: false,
@@ -15,10 +14,9 @@ const protect = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    // Vérifie et décode le token
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Ajoute les infos de l'utilisateur RH à la requête
     req.user = decoded; // { id, email, role }
     next();
   } catch (err) {
