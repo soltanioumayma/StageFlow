@@ -5,9 +5,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-/**
- * Types d'actions d'audit
- */
+
 const AuditAction = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
@@ -21,15 +19,7 @@ const AuditAction = {
   VIEW_DASHBOARD: 'VIEW_DASHBOARD',
 };
 
-/**
- * Enregistre une action d'audit dans la base de données
- * @param {Object} data - Données de l'audit
- * @param {string} data.action - Type d'action
- * @param {number} data.user_id - ID de l'utilisateur RH
- * @param {string} data.user_email - Email de l'utilisateur
- * @param {string} data.ip_address - Adresse IP
- * @param {Object} data.metadata - Métadonnées additionnelles (JSON)
- */
+
 const logAudit = async (data) => {
   const { action, user_id, user_email, ip_address, metadata = {} } = data;
 
@@ -57,9 +47,7 @@ const logAudit = async (data) => {
   }
 };
 
-/**
- * Récupère les logs d'audit pour un utilisateur
- */
+
 const getAuditLogsByUser = async (userId, limit = 100) => {
   try {
     const query = `
@@ -76,9 +64,7 @@ const getAuditLogsByUser = async (userId, limit = 100) => {
   }
 };
 
-/**
- * Récupère les logs d'audit pour une action spécifique
- */
+
 const getAuditLogsByAction = async (action, limit = 100) => {
   try {
     const query = `

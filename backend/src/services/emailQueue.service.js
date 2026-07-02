@@ -2,16 +2,12 @@
 const { sendEmail } = require('./email.service');
 const logger = require('../utils/logger');
 
-/**
- * Queue en mémoire pour les emails (à remplacer par Bull/Redis en prod)
- */
+
 const emailQueue = new Map();
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 5000; // 5 secondes
 
-/**
- * Ajoute un email à la queue
- */
+
 const addToQueue = async (type, email, prenom, reference, candidatureId) => {
   const jobId = Date.now();
   
@@ -36,9 +32,7 @@ const addToQueue = async (type, email, prenom, reference, candidatureId) => {
   return jobId;
 };
 
-/**
- * Traite un job de la queue
- */
+
 const processJob = async (jobId) => {
   const job = emailQueue.get(jobId);
   if (!job) return;
@@ -73,16 +67,12 @@ const processJob = async (jobId) => {
   }
 };
 
-/**
- * Récupère le statut d'un job
- */
+
 const getJobStatus = (jobId) => {
   return emailQueue.get(jobId);
 };
 
-/**
- * Récupère les statistiques de la queue
- */
+
 const getQueueStats = () => {
   const jobs = Array.from(emailQueue.values());
   return {

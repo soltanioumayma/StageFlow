@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class Notification {
-  /**
-   * Crée une nouvelle notification
-   */
+  
   static async create(data) {
     const {
       candidature_id,
@@ -21,9 +19,7 @@ class Notification {
     return result.rows[0];
   }
 
-  /**
-   * Récupère toutes les notifications d'une candidature
-   */
+  
   static async findByCandidatureId(candidature_id) {
     const result = await query(
       `SELECT * FROM notifications 
@@ -34,9 +30,7 @@ class Notification {
     return result.rows;
   }
 
-  /**
-   * Met à jour le statut d'une notification
-   */
+  
   static async updateStatut(id, statut) {
     const result = await query(
       `UPDATE notifications 
@@ -48,16 +42,12 @@ class Notification {
     return result.rows[0];
   }
 
-  /**
-   * Liste les types de notifications valides
-   */
+  
   static getTypesValides() {
     return ['confirmation', 'acceptation', 'refus'];
   }
 
-  /**
-   * Liste les statuts valides
-   */
+  
   static getStatutsValides() {
     return ['envoye', 'echec'];
   }

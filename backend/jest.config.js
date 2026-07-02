@@ -2,12 +2,12 @@ module.exports = {
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
-    'src/**/*.js',
+    'src*.js',
     '!src/server.js',
     '!src/app.js'
   ],
   testMatch: [
-    '**/tests/**/*.test.js'
+    '**/tests*.test.js'
   ],
   verbose: true,
   testTimeout: 10000

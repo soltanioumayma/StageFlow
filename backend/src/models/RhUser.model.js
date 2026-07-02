@@ -1,9 +1,7 @@
 const { query } = require('../config/db');
 
 class RhUser {
-  /**
-   * Crée un nouvel utilisateur RH
-   */
+  
   static async create(data) {
     const { email, password_hash, nom, prenom, role = 'recruteur' } = data;
     const result = await query(
@@ -15,9 +13,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Récupère un utilisateur par ID
-   */
+  
   static async findById(id) {
     const result = await query(
       'SELECT id, email, nom, prenom, role, created_at FROM rh_users WHERE id = $1',
@@ -26,9 +22,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Récupère un utilisateur par email (avec password_hash pour auth)
-   */
+  
   static async findByEmail(email) {
     const result = await query(
       'SELECT * FROM rh_users WHERE LOWER(email) = LOWER($1)',
@@ -37,9 +31,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Met à jour le mot de passe
-   */
+  
   static async updatePassword(id, password_hash) {
     const result = await query(
       `UPDATE rh_users 
@@ -51,9 +43,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Met à jour les informations de l'utilisateur
-   */
+  
   static async update(id, data) {
     const { nom, prenom, role } = data;
     const result = await query(
@@ -66,9 +56,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Liste tous les utilisateurs RH
-   */
+  
   static async findAll() {
     const result = await query(
       'SELECT id, email, nom, prenom, role, created_at FROM rh_users ORDER BY created_at DESC'
@@ -76,9 +64,7 @@ class RhUser {
     return result.rows;
   }
 
-  /**
-   * Supprime un utilisateur
-   */
+  
   static async delete(id) {
     const result = await query(
       'DELETE FROM rh_users WHERE id = $1 RETURNING id',
@@ -87,9 +73,7 @@ class RhUser {
     return result.rows[0];
   }
 
-  /**
-   * Liste les rôles valides
-   */
+  
   static getRolesValides() {
     return ['admin', 'recruteur'];
   }

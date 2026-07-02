@@ -4,11 +4,7 @@ const RhUser = require('../models/RhUser.model');
 const { successResponse, errorResponse, unauthorizedResponse } = require('../utils/responseHandler');
 const logger = require('../utils/logger'); // ← CORRIGÉ : plus de { logger }
 
-/**
- * POST /api/auth/login
- * Corps : { email, password }
- * Retourne : { token, user }
- */
+
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -68,10 +64,7 @@ const login = async (req, res) => {
   }
 };
 
-/**
- * GET /api/auth/me
- * Retourne les infos de l'utilisateur connecté (token requis)
- */
+
 const getMe = async (req, res) => {
   try {
     const user = await RhUser.findById(req.user.id);
@@ -87,10 +80,7 @@ const getMe = async (req, res) => {
   }
 };
 
-/**
- * POST /api/auth/refresh
- * Rafraîchit le token d'accès avec le refresh token
- */
+
 const refreshToken = async (req, res) => {
   const { refreshToken: token } = req.body;
 

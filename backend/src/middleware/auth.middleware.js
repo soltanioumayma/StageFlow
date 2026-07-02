@@ -1,12 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-/**
- * Middleware de protection JWT.
- * À utiliser sur toutes les routes de l'espace RH.
- *
- * Le token doit être envoyé dans le header :
- * Authorization: Bearer <token>
- */
+
 const protect = (req, res, next) => {
   const authHeader = req.headers['authorization'];
 

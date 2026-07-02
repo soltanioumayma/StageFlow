@@ -1,24 +1,18 @@
 
-/**
- * Valide un email
- */
+
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-/**
- * Valide un numéro de téléphone (format international)
- */
+
 const isValidPhone = (phone) => {
   if (!phone) return true; // Optionnel
   const phoneRegex = /^\+?[0-9\s\-]{8,20}$/;
   return phoneRegex.test(phone);
 };
 
-/**
- * Valide une URL
- */
+
 const isValidUrl = (url) => {
   if (!url) return true; // Optionnel
   try {
@@ -29,24 +23,18 @@ const isValidUrl = (url) => {
   }
 };
 
-/**
- * Valide que la chaîne n'est pas vide
- */
+
 const isNotEmpty = (value) => {
   if (value === null || value === undefined) return false;
   return String(value).trim().length > 0;
 };
 
-/**
- * Valide que la valeur est dans une liste
- */
+
 const isInList = (value, list) => {
   return list.includes(value);
 };
 
-/**
- * Nettoie une chaîne (trim et lowercase pour emails)
- */
+
 const cleanString = (str, toLowerCase = false) => {
   if (!str) return null;
   let cleaned = str.trim();
@@ -54,9 +42,7 @@ const cleanString = (str, toLowerCase = false) => {
   return cleaned;
 };
 
-/**
- * Valide les données de candidature
- */
+
 const validateCandidatureData = (data) => {
   const errors = [];
 
@@ -106,9 +92,7 @@ const validateCandidatureData = (data) => {
   return errors;
 };
 
-/**
- * Valide les données de décision RH
- */
+
 const validateDecisionData = (data) => {
   const errors = [];
   const decisionsValides = ['acceptee', 'refusee'];

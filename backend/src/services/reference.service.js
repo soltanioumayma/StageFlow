@@ -1,10 +1,6 @@
 const Candidature = require('../models/Candidature.model');
 
-/**
- * Génère la prochaine référence de l'année en cours.
- * Exemple : RIF-2026-0042
- * On cherche le MAX existant et on incrémente.
- */
+
 const generateReference = async () => {
   const year = new Date().getFullYear();
   const prefix = `RIF-${year}-`;

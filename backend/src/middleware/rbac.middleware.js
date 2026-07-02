@@ -1,16 +1,12 @@
 
-/**
- * Définition des rôles et permissions
- */
+
 const Role = {
   ADMIN: 'admin',
   RECRUTEUR: 'recruteur',
   LECTEUR: 'lecteur',
 };
 
-/**
- * Définition des permissions par rôle
- */
+
 const Permissions = {
   [Role.ADMIN]: {
     canViewAll: true,
@@ -41,9 +37,7 @@ const Permissions = {
   },
 };
 
-/**
- * Middleware pour vérifier si l'utilisateur a une permission spécifique
- */
+
 const hasPermission = (permission) => {
   return (req, res, next) => {
     const userRole = req.user?.role;
@@ -68,9 +62,7 @@ const hasPermission = (permission) => {
   };
 };
 
-/**
- * Middleware pour vérifier si l'utilisateur a un rôle spécifique
- */
+
 const hasRole = (...allowedRoles) => {
   return (req, res, next) => {
     const userRole = req.user?.role;
@@ -86,19 +78,13 @@ const hasRole = (...allowedRoles) => {
   };
 };
 
-/**
- * Middleware pour vérifier que l'utilisateur est admin
- */
+
 const isAdmin = hasRole(Role.ADMIN);
 
-/**
- * Middleware pour vérifier que l'utilisateur peut prendre des décisions
- */
+
 const canDecide = hasPermission('canDecide');
 
-/**
- * Middleware pour vérifier que l'utilisateur peut exporter
- */
+
 const canExport = hasPermission('canExport');
 
 module.exports = {
